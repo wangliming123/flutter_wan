@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_wan/common/Const.dart';
+import 'package:flutter_wan/http/ApiService.dart';
 import 'package:flutter_wan/ui/LoginPage.dart';
 import 'package:flutter_wan/ui/SplashPage.dart';
 import 'package:flutter_wan/util/CommonUtils.dart';
@@ -11,6 +12,7 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await SystemChrome.setPreferredOrientations(
       [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
+  ApiService.ins().init();
   runApp(MyApp());
 }
 

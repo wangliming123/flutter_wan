@@ -5,5 +5,7 @@ class RouteConst {
 }
 
 class SpConst {
-  static var isLogin = "is_login";
+  static final isLogin = "is_login";
+
+  static final cookie = "cookie";
 }

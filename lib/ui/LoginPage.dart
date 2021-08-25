@@ -155,6 +155,7 @@ class _LoginState<LoginPage> extends BaseState {
 
   login() async {
     showCoverLoading();
+
     print('login');
   }
 
