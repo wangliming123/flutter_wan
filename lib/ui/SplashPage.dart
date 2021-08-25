@@ -1,18 +1,28 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_wan/common/Const.dart';
 import 'package:flutter_wan/util/SpUtils.dart';
 
 class SplashPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    Future.wait(<Future<void>>[], eagerError: true).then((_) async {
-      bool isLogin = await SpUtils.getInstance().getBool("is_login");
-      if (isLogin) {}
+    Future.delayed(Duration(milliseconds: 2000)).then((value) async {
+      bool isLogin = await SpUtils.getInstance().getBool(SpConst.isLogin) ?? false;
+      print('$isLogin');
+      if (isLogin) {
+      } else {
+        Navigator.pushNamedAndRemoveUntil(
+            context, RouteConst.loginPage, (route) => false);
+      }
     });
-    return Image.asset(
-      'images/splash_pic.png',
-      fit: BoxFit.cover,
-      width: MediaQuery.of(context).size.width,
-      height: MediaQuery.of(context).size.height,
+    return Container(
+      alignment: Alignment.center,
+      color: Colors.white,
+      child: Text(
+        "splash",
+        style: TextStyle(color: Colors.blue, fontSize: 24.sp),
+      ),
     );
   }
 }

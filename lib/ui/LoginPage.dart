@@ -2,9 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_wan/base/BaseState.dart';
-import 'package:flutter_wan/ui/widget/CommonButton.dart';
-import 'package:flutter_wan/util/TextUtils.dart';
-import 'package:flutter_wan/util/exUtils.dart';
+import 'package:flutter_wan/ui/widget/Buttons.dart';
+import 'package:flutter_wan/util/Extension.dart';
+import 'package:flutter_wan/util/UiUtils.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -19,7 +19,10 @@ class _LoginState<LoginPage> extends BaseState {
   String _username = "";
   String _password = "";
 
+  bool _loginFailed = false;
+
   GlobalKey<CommonButtonState> btnKey = GlobalKey();
+  GlobalKey<CommonButtonState> btnKey2 = GlobalKey();
 
   @override
   Widget getLayout() {
@@ -32,6 +35,7 @@ class _LoginState<LoginPage> extends BaseState {
             Container(
               color: Colors.white,
               child: Column(
+                mainAxisSize: MainAxisSize.max,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Padding(
@@ -51,19 +55,15 @@ class _LoginState<LoginPage> extends BaseState {
                   Container(
                     margin: EdgeInsets.only(left: 30.w, top: 40.w, right: 30.w),
                     height: 45.w,
-                    child: Container(
-                      child: TextUtils.buildTextField(
-                        focusNode: _usernameFocus,
-                        textAlign: TextAlign.start,
-                        text: _username,
-                        textColor: "#333333".color,
-                        hintColor: "#8d8d8d".color,
-                        hintText: "请输入用户名",
-                        fontSize: 18.sp,
-                        onText: (value) {
-                          saveUserName(value);
-                        },
-                      ),
+                    child: UiUtils.buildTextField(
+                      focusNode: _usernameFocus,
+                      textAlign: TextAlign.start,
+                      text: _username,
+                      textColor: "#333333".color,
+                      hintColor: "#8d8d8d".color,
+                      hintText: "请输入用户名",
+                      fontSize: 18.sp,
+                      onText: saveUserName,
                     ),
                   ),
                   Container(
@@ -77,20 +77,16 @@ class _LoginState<LoginPage> extends BaseState {
                   Container(
                     margin: EdgeInsets.only(left: 30.w, top: 40.w, right: 30.w),
                     height: 45.w,
-                    child: Container(
-                      child: TextUtils.buildTextField(
-                        focusNode: _usernameFocus,
-                        textAlign: TextAlign.start,
-                        inputType: TextInputType.visiblePassword,
-                        text: _username,
-                        textColor: "#333333".color,
-                        hintColor: "#8d8d8d".color,
-                        hintText: "请输入密码",
-                        fontSize: 18.sp,
-                        onText: (value) {
-                          savePassword(value);
-                        },
-                      ),
+                    child: UiUtils.buildTextField(
+                      focusNode: _usernameFocus,
+                      textAlign: TextAlign.start,
+                      inputType: TextInputType.visiblePassword,
+                      text: _username,
+                      textColor: "#333333".color,
+                      hintColor: "#8d8d8d".color,
+                      hintText: "请输入密码",
+                      fontSize: 18.sp,
+                      onText: savePassword,
                     ),
                   ),
                   Container(
@@ -103,22 +99,34 @@ class _LoginState<LoginPage> extends BaseState {
                   ),
                   Container(
                     margin: EdgeInsets.only(left: 30.w, top: 8.w),
+                    height: 20.w,
                     child: Text(
                       "用户名或密码错误",
                       style: TextStyle(fontSize: 12.sp, color: Colors.red),
-                    ),
+                    ).visible(_loginFailed),
                   ),
                   Padding(
                     padding:
                         EdgeInsets.only(left: 30.w, top: 30.w, right: 30.w),
                     child: CommonButton(
-                      key: btnKey,
+                      enabled: true,
                       text: "登录",
+                      height: 50.w,
+                      radius: 50.w,
+                      textSize: 18.sp,
+                      onTap: login,
+                    ),
+                  ),
+                  Padding(
+                    padding:
+                    EdgeInsets.only(left: 30.w, top: 30.w, right: 30.w),
+                    child: CommonButton(
+                      text: "注册",
+                      height: 50.w,
+                      radius: 50.w,
                       textSize: 18,
-                      isEnable: true,
-                      onClick: () {
-                        login();
-                      },
+                      enabled: true,
+                      onTap: register,
                     ),
                   ),
                 ],
@@ -145,8 +153,13 @@ class _LoginState<LoginPage> extends BaseState {
     _password = value;
   }
 
-  void login() {
+  login() async {
+    showCoverLoading();
+    print('login');
+  }
 
+  void register() {
+    print('register');
   }
 
 }

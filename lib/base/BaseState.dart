@@ -32,8 +32,12 @@ abstract class BaseState<T extends StatefulWidget> extends State<T> {
     Navigator.of(context).pop();
   }
 
-
-  Future<void> showCoverLoading() {
+  var _isLoadingShowing = false;
+  showCoverLoading() {
+    if (_isLoadingShowing) {
+      return;
+    }
+    _isLoadingShowing = true;
     return DialogUtils.showCustomDialog(context, clickOutsideClose: false, barrierDismissible: false,
     child: Container(
       width: 50.w,
@@ -47,5 +51,14 @@ abstract class BaseState<T extends StatefulWidget> extends State<T> {
         image: AssetImage("images/loading_icon.gif"),
       ),
     ));
+  }
+
+  ///不可单独调用，必须先调用[showCoverLoading]
+  void hideCoverLoading() {
+    if (!_isLoadingShowing) {
+      return;
+    }
+    _isLoadingShowing = false;
+    Navigator.of(context).pop();
   }
 }

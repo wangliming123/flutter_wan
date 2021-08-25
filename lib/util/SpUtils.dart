@@ -16,49 +16,55 @@ class SpUtils {
     return _mSp!;
   }
 
+  SharedPreferences? prefs;
+  initPrefs() async {
+    if (prefs == null) prefs = await SharedPreferences.getInstance();
+    return prefs;
+  }
+
   putString(String key, String value) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setString(key, value);
+    await initPrefs();
+    prefs?.setString(key, value);
   }
 
   getString(String key) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    return prefs.getString(key);
+    await initPrefs();
+    return prefs?.getString(key);
   }
 
   removeData(String key) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    return prefs.remove(key);
+    await initPrefs();
+    return prefs?.remove(key);
   }
 
   putInt(String key, int value) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setInt(key, value);
+    await initPrefs();
+    prefs?.setInt(key, value);
   }
 
   getInt(String key) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    return prefs.getInt(key);
+    await initPrefs();
+    return prefs?.getInt(key);
   }
 
   putDouble(String key, double value) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setDouble(key, value);
+    await initPrefs();
+    prefs?.setDouble(key, value);
   }
 
   getDouble(String key) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    return prefs.getDouble(key);
+    await initPrefs();
+    return prefs?.getDouble(key);
   }
 
   putBool(String key, bool value) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setBool(key, value);
+    await initPrefs();
+    prefs?.setBool(key, value);
   }
 
   getBool(String key) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    return prefs.getBool(key);
+    await initPrefs();
+    return prefs?.getBool(key);
   }
 
 }
