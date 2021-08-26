@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 extension ColorEx on String {
   Color get color {
@@ -54,6 +56,20 @@ extension WidgetEx on Widget {
       padding:
           EdgeInsets.only(left: left, top: top, right: right, bottom: bottom),
       child: this,
+    );
+  }
+}
+
+extension StringEx on String {
+  void toast() {
+    Fluttertoast.showToast(
+      msg: this,
+      toastLength: Toast.LENGTH_SHORT,
+      gravity: ToastGravity.BOTTOM,
+      timeInSecForIosWeb: 1,
+      backgroundColor: Colors.black87,
+      textColor: Colors.white,
+      fontSize: 16.sp,
     );
   }
 }

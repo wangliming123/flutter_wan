@@ -38,6 +38,8 @@ dependencies:
   pull_to_refresh: 1.6.4-nullsafety.0
   # 图片缓存组件
   cached_network_image: ^3.0.0
+  # toast组件
+  fluttertoast: ^8.0.8
 
 dev_dependencies:
   flutter_test:

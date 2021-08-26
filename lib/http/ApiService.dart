@@ -24,9 +24,14 @@ class ApiService {
   }
 
   getHttpAsync(String action, {Map<String, dynamic>? querys}) async {
-    var response = await dio.get(action, queryParameters: querys);
+    Response response = await dio.get(action, queryParameters: querys);
     resolveResponse(response);
   }
+
+  postHttpAsync(String action, {Map<String, dynamic>? data, Map<String, dynamic>? querys}) async {
+    Response response = await dio.post(action, data: data, queryParameters: querys);
+    resolveResponse(response);
+}
 
   dynamic resolveResponse(Response response) {
     if (response.statusCode == 200) {

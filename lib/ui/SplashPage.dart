@@ -11,6 +11,8 @@ class SplashPage extends StatelessWidget {
       bool isLogin = await SpUtils.getInstance().getBool(SpConst.isLogin) ?? false;
       print('$isLogin');
       if (isLogin) {
+        Navigator.pushNamedAndRemoveUntil(
+            context, RouteConst.mainPage, (route) => false);
       } else {
         Navigator.pushNamedAndRemoveUntil(
             context, RouteConst.loginPage, (route) => false);

@@ -2,8 +2,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_wan/base/BaseState.dart';
+import 'package:flutter_wan/common/Const.dart';
+import 'package:flutter_wan/http/ApiException.dart';
+import 'package:flutter_wan/http/ApiService.dart';
 import 'package:flutter_wan/ui/widget/Buttons.dart';
 import 'package:flutter_wan/util/Extension.dart';
+import 'package:flutter_wan/util/SpUtils.dart';
 import 'package:flutter_wan/util/UiUtils.dart';
 
 class LoginPage extends StatefulWidget {
@@ -78,10 +82,10 @@ class _LoginState<LoginPage> extends BaseState {
                     margin: EdgeInsets.only(left: 30.w, top: 40.w, right: 30.w),
                     height: 45.w,
                     child: UiUtils.buildTextField(
-                      focusNode: _usernameFocus,
+                      focusNode: _passwordFocus,
                       textAlign: TextAlign.start,
                       inputType: TextInputType.visiblePassword,
-                      text: _username,
+                      text: _password,
                       textColor: "#333333".color,
                       hintColor: "#8d8d8d".color,
                       hintText: "请输入密码",
@@ -119,7 +123,7 @@ class _LoginState<LoginPage> extends BaseState {
                   ),
                   Padding(
                     padding:
-                    EdgeInsets.only(left: 30.w, top: 30.w, right: 30.w),
+                        EdgeInsets.only(left: 30.w, top: 30.w, right: 30.w),
                     child: CommonButton(
                       text: "注册",
                       height: 50.w,
@@ -149,18 +153,40 @@ class _LoginState<LoginPage> extends BaseState {
   void saveUserName(String value) {
     _username = value;
   }
+
   void savePassword(String value) {
     _password = value;
   }
 
   login() async {
     showCoverLoading();
-
+    try {
+      var res = await ApiService.ins().postHttpAsync("user/login",
+          querys: {"username": _username, "password": _password});
+      hideCoverLoading();
+      SpUtils.getInstance().putBool(SpConst.isLogin, true);
+      Navigator.pushNamedAndRemoveUntil(
+          context, RouteConst.mainPage, (route) => false);
+    } on ApiException catch(e) {
+      e.toString().toast();
+      hideCoverLoading();
+    }
     print('login');
   }
 
-  void register() {
+  void register() async {
+    try {
+      var res = await ApiService.ins().postHttpAsync("user/register", data: {
+        "username": _username,
+        "password": _password,
+        "repassword": _password
+      });
+      hideCoverLoading();
+      login();
+    } on ApiException catch(e) {
+      e.toString().toast();
+      hideCoverLoading();
+    }
     print('register');
   }
-
 }

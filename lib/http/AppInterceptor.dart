@@ -7,7 +7,7 @@ class AppInterceptor extends Interceptor {
 
   @override
   Future<void> onRequest(RequestOptions options, RequestInterceptorHandler handler) async {
-    String? cookies = SpUtils.getInstance().getString(SpConst.cookie);
+    String? cookies = await SpUtils.getInstance().getString(SpConst.cookie);
     if (cookies != null) {
       cookies.split(",").forEach((element) {
         options.headers.addAll({"Cookie": element});

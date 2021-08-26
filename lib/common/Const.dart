@@ -2,6 +2,7 @@
 class RouteConst {
   static final splashPage = "splash";
   static final loginPage = "login";
+  static final mainPage = "main";
 }
 
 class SpConst {
