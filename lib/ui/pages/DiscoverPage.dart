@@ -1,12 +1,12 @@
 
 import 'package:flutter/material.dart';
 
-class MinePage extends StatelessWidget {
+class DiscoverPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
       alignment: Alignment.center,
-      child: Text("mine"),
+      child: Text("discover"),
     );
   }
 

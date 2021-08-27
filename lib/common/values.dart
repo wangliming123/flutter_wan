@@ -18,4 +18,12 @@ class SimpleTextStyle extends TextStyle {
 
 class ColorRes {
   static final e2e2e2 = "#e2e2e2".color;
+  static final colorPrimary = "#1296db".color;
+  static final textColorPrimary = "#333333".color;
+  static final textColorSecondary = "#99000000".color;
+}
+
+class StringRes {
+  static final doubleClickExitStr = "再次点击退出";
+  static final noMoreData = "没有更多了";
 }

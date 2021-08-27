@@ -82,6 +82,7 @@ class _LoginState<LoginPage> extends BaseState {
                     margin: EdgeInsets.only(left: 30.w, top: 40.w, right: 30.w),
                     height: 45.w,
                     child: UiUtils.buildTextField(
+                      obscureText: true,
                       focusNode: _passwordFocus,
                       textAlign: TextAlign.start,
                       inputType: TextInputType.visiblePassword,

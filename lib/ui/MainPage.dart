@@ -1,10 +1,11 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_wan/base/BaseState.dart';
+import 'package:flutter_wan/common/values.dart';
+import 'package:flutter_wan/ui/pages/DiscoverPage.dart';
 import 'package:flutter_wan/ui/pages/HomePage.dart';
 import 'package:flutter_wan/ui/pages/MinePage.dart';
-import 'package:flutter_wan/util/UiUtils.dart';
+import 'package:flutter_wan/util/Extension.dart';
 
 class MainPage extends StatefulWidget {
   @override
@@ -15,57 +16,51 @@ class MainPage extends StatefulWidget {
 
 class MainState<MainPage> extends BaseState {
   var _index = 0;
-  List<Widget> _widgets = [HomePage(), MinePage()];
+  List<Widget> _widgets = [HomePage(), DiscoverPage(), MinePage()];
 
+  // PageController _pageController = PageController(initialPage: 0, keepPage: true);
   @override
   Widget getLayout() {
-    return Scaffold(
+    return WillPopScope(child: Scaffold(
       body: Stack(
-        fit: StackFit.expand,
         children: [
           IndexedStack(
             index: _index,
             children: _widgets,
           ),
+          // PageView(
+          //   scrollDirection: Axis.horizontal,
+          //   physics: ClampingScrollPhysics(),
+          //   children: _widgets,
+          //   controller: _pageController,
+          //   onPageChanged: _selectPage,
+          // )
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(
+        fixedColor: ColorRes.colorPrimary,
+        onTap: (index) {
+          // _pageController.jumpToPage(index);
+          _selectPage(index);
+        },
+        currentIndex: _index,
+        iconSize: 20.w,
         items: [
           BottomNavigationBarItem(
-            icon: Image(
-              image: AssetImage("images/ic_home.png"),
-              fit: BoxFit.cover,
-              width: 20.w,
-              height: 20.w,
-            ),
-            activeIcon: Image(
-              image: AssetImage("images/ic_home_selected.png"),
-              fit: BoxFit.cover,
-              width: 20.w,
-              height: 20.w,
-            ),
+            icon: Icon(IconData(58890, fontFamily: "iconfont1"),),
             label: "首页",
           ),
           BottomNavigationBarItem(
-            icon: Image(
-              image: AssetImage("images/ic_mine.png"),
-              fit: BoxFit.cover,
-              width: 20.w,
-              height: 20.w,
-            ),
-            activeIcon: Image(
-              image: AssetImage("images/ic_mine_selected.png"),
-              fit: BoxFit.cover,
-              width: 20.w,
-              height: 20.w,
-            ),
+            icon: Icon(IconData(59186, fontFamily: "iconfont1"),),
+            label: "发现",
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(IconData(58896, fontFamily: "iconfont1"),),
             label: "我的",
           ),
         ],
-        onTap: _selectPage,
-        currentIndex: _index,
       ),
-    );
+    ), onWillPop: _onBackPressed);
   }
 
   @override
@@ -75,5 +70,17 @@ class MainState<MainPage> extends BaseState {
     setState(() {
       _index = index;
     });
+  }
+
+  var _lastBackTime = 0;
+  Future<bool> _onBackPressed() async {
+    var backTime = new DateTime.now().millisecondsSinceEpoch;
+    if (backTime - _lastBackTime <= 2000) {
+      return true;
+    } else {
+      StringRes.doubleClickExitStr.toast();
+    }
+    _lastBackTime = backTime;
+    return false;
   }
 }

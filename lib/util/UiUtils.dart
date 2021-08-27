@@ -1,16 +1,16 @@
-
 import 'dart:io';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class UiUtils {
-  static buildImagePure(String? path, {
-    double width = 0,
-    double height = 0,
+  static Widget buildImagePure(String? path, {
+    double? width,
+    double? height,
     EdgeInsetsGeometry padding = const EdgeInsets.all(0),
     EdgeInsetsGeometry margin = const EdgeInsets.all(0),
     String? placeHolder,
@@ -60,19 +60,18 @@ class UiUtils {
     }
   }
 
-  static Widget text(
-      String text,
+  static Widget text(String text,
       double size,
       Color color, {
         FontWeight fontWeight = FontWeight.normal,
         double fontHeight = 1,
         TextAlign? textAlign = TextAlign.start,
-        int? maxlines = 100,
+        int? maxLines = 100,
       }) {
     return Text(
       text,
       textAlign: textAlign,
-      maxLines: maxlines,
+      maxLines: maxLines,
       overflow: TextOverflow.ellipsis,
       style: TextStyle(
         fontSize: size,
@@ -84,6 +83,26 @@ class UiUtils {
       ),
     );
   }
+
+  static Widget htmlText(String data,
+      double size,
+      Color color,
+      {int? maxLines = 100,}) {
+    return Html(
+      data: data,
+      style: {
+        "*": Style(
+          fontSize: FontSize(size),
+          color: color,
+        ),
+        "a": Style(
+          textDecoration: TextDecoration.none,
+          color: Colors.blue,
+        )
+      },
+    );
+  }
+
   static TextField buildTextField({
     TextInputType inputType = TextInputType.text,
     List<TextInputFormatter>? inputFormatters,
@@ -99,8 +118,10 @@ class UiUtils {
     bool isCollapsed = false,
     FocusNode? focusNode,
     Function? onText,
+    bool obscureText = false,
   }) {
     return TextField(
+      obscureText: obscureText,
       focusNode: focusNode,
       inputFormatters: inputFormatters,
       keyboardType: inputType,
@@ -135,7 +156,6 @@ class UiUtils {
       ),
     );
   }
-
 
   static Widget textFieldNew({
     TextInputType inputType = TextInputType.text,

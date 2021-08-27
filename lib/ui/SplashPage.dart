@@ -7,9 +7,9 @@ import 'package:flutter_wan/util/SpUtils.dart';
 class SplashPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    Future.delayed(Duration(milliseconds: 2000)).then((value) async {
+    Future.delayed(Duration(milliseconds: 1000)).then((value) async {
       bool isLogin = await SpUtils.getInstance().getBool(SpConst.isLogin) ?? false;
-      print('$isLogin');
+      print('isLogon $isLogin');
       if (isLogin) {
         Navigator.pushNamedAndRemoveUntil(
             context, RouteConst.mainPage, (route) => false);

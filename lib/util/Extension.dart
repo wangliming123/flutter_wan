@@ -58,6 +58,32 @@ extension WidgetEx on Widget {
       child: this,
     );
   }
+
+  Widget paddingAll(double all) {
+    return Padding(
+      padding: EdgeInsets.all(all),
+      child: this,
+    );
+  }
+
+  Widget position({
+    double? left,
+    double? top,
+    double? right,
+    double? bottom,
+    double? width,
+    double? height,
+  }) {
+    return Positioned(
+      child: this,
+      left: left,
+      top: top,
+      right: right,
+      bottom: bottom,
+      width: width,
+      height: height,
+    );
+  }
 }
 
 extension StringEx on String {

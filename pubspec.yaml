@@ -40,6 +40,8 @@ dependencies:
   cached_network_image: ^3.0.0
   # toast组件
   fluttertoast: ^8.0.8
+  # html源码显示
+  flutter_html: ^2.1.1
 
 dev_dependencies:
   flutter_test:
@@ -88,3 +90,9 @@ flutter:
   # see https://flutter.dev/custom-fonts/#from-packages
   assets:
     - images/
+    - fonts/
+
+  fonts:
+    - family: iconfont1
+      fonts:
+        - asset: fonts/iconfont1.ttf
