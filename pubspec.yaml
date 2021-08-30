@@ -42,6 +42,8 @@ dependencies:
   fluttertoast: ^8.0.8
   # html源码显示
   flutter_html: ^2.1.1
+  # webView
+  webview_flutter: ^2.0.12
 
 dev_dependencies:
   flutter_test:

@@ -12,7 +12,7 @@ class SplashPage extends StatelessWidget {
       print('isLogon $isLogin');
       if (isLogin) {
         Navigator.pushNamedAndRemoveUntil(
-            context, RouteConst.loginPage, (route) => false);
+            context, RouteConst.mainPage, (route) => false);
       } else {
         Navigator.pushNamedAndRemoveUntil(
             context, RouteConst.loginPage, (route) => false);

@@ -22,6 +22,7 @@ class ItemArticle extends StatefulWidget {
 
 class ItemArticleState<ItemArticle> extends BaseState {
   dynamic article;
+
   ItemArticleState(this.article);
 
   @override
@@ -68,7 +69,7 @@ class ItemArticleState<ItemArticle> extends BaseState {
                 ).visible(article["isTop"] ?? false),
                 Spacer(),
                 UiUtils.text(
-                    article["niceDate"], 12.sp, ColorRes.textColorSecondary)
+                        article["niceDate"], 12.sp, ColorRes.textColorSecondary)
                     .paddingAll(3.w),
               ],
             ),
@@ -78,7 +79,7 @@ class ItemArticleState<ItemArticle> extends BaseState {
               children: [
                 UiUtils.buildImagePure(article["envelopePic"], width: 100.w)
                     .visible(article["envelopePic"] != null &&
-                    article["envelopePic"].toString().isNotEmpty),
+                        article["envelopePic"].toString().isNotEmpty),
                 Column(
                   children: [
                     UiUtils.htmlText(
@@ -102,7 +103,9 @@ class ItemArticleState<ItemArticle> extends BaseState {
                   IconData(article["collect"] ? 58959 : 58960,
                       fontFamily: "iconfont1"),
                   color: Colors.red,
-                ).padding(top: 5.w, bottom: 5.w, right: 20.w).onTap(() => _collectArticle())
+                )
+                    .padding(top: 5.w, bottom: 5.w, right: 20.w)
+                    .onTap(() => _collectArticle())
               ],
             )
           ],
@@ -114,30 +117,30 @@ class ItemArticleState<ItemArticle> extends BaseState {
   }
 
   _collectArticle() async {
-    bool isLogin = await SpUtils.getInstance().getBool(SpConst.isLogin) ?? false;
+    bool isLogin =
+        await SpUtils.getInstance().getBool(SpConst.isLogin) ?? false;
     if (!isLogin) {
-      Navigator.pushNamedAndRemoveUntil(context, RouteConst.loginPage, (route) => false);
+      Navigator.pushNamedAndRemoveUntil(
+          context, RouteConst.loginPage, (route) => false);
       return;
     }
     try {
       if (article["collect"]) {
+        await ApiService.ins()
+            .postHttpAsync("lg/uncollect_originId/${article["id"]}/json");
         article["collect"] = false;
-        invalidate();
-        await ApiService.ins().postHttpAsync(
-            "lg/collect/${article["id"]}/json");
       } else {
+        await ApiService.ins()
+            .postHttpAsync("lg/collect/${article["id"]}/json");
         article["collect"] = true;
-        invalidate();
-        await ApiService.ins().postHttpAsync(
-            "lg/uncollect_originId/${article["id"]}/json");
       }
-    } on ApiException catch(e) {
+    } on ApiException catch (e) {
       e.msg?.toast();
+    } finally {
+      invalidate();
     }
   }
 
   @override
-  void initData() {
-
-  }
+  void initData() {}
 }
