@@ -27,22 +27,20 @@ class _HomeState<HomePage> extends BaseState {
 
   @override
   Widget getLayout() {
-    return Scaffold(
-      body: SmartRefresher(
+    return PageStateView(
+      state: _state,
+      onEmptyClick: initData,
+      onErrorClick: initData,
+      contentView: SmartRefresher(
         controller: _refreshController,
         enablePullUp: true,
         onRefresh: _onRefresh,
         onLoading: _loadMore,
-        child: PageStateView(
-          state: _state,
-          onEmptyClick: initData,
-          onErrorClick: initData,
-          contentView: ListView.builder(
-            itemCount: mList.length,
-            itemBuilder: (BuildContext context, int index) {
-              return ItemArticle(mList[index]);
-            },
-          ),
+        child: ListView.builder(
+          itemCount: mList.length,
+          itemBuilder: (BuildContext context, int index) {
+            return ItemArticle(mList[index]);
+          },
         ),
       ),
     );
@@ -66,15 +64,15 @@ class _HomeState<HomePage> extends BaseState {
       _page++;
       mList.addAll(top ?? []);
       mList.addAll(data["datas"] ?? []);
-      setState(() {
-        _state =
-            mList.isEmpty ? PageStateView.showEmpty : PageStateView.showContent;
-      });
+      _state =
+          mList.isEmpty ? PageStateView.showEmpty : PageStateView.showContent;
     } on ApiException catch (e) {
       e.msg?.toast();
-      setState(() {
-        _state = PageStateView.showError;
-      });
+      _state = PageStateView.showError;
+    } finally {
+      if (mounted) {
+        invalidate();
+      }
     }
   }
 
@@ -94,17 +92,16 @@ class _HomeState<HomePage> extends BaseState {
       mList.clear();
       mList.addAll(top ?? []);
       mList.addAll(data["datas"] ?? []);
-      setState(() {
-        _state =
-            mList.isEmpty ? PageStateView.showEmpty : PageStateView.showContent;
-      });
+      _state =
+          mList.isEmpty ? PageStateView.showEmpty : PageStateView.showContent;
     } on ApiException catch (e) {
       e.msg?.toast();
-      setState(() {
-        _state = PageStateView.showError;
-      });
+      _state = PageStateView.showError;
     } finally {
       _refreshController.refreshCompleted();
+      if (mounted) {
+        invalidate();
+      }
     }
   }
 
@@ -114,17 +111,18 @@ class _HomeState<HomePage> extends BaseState {
         StringRes.noMoreData.toast();
         return;
       }
-      var data = await ApiService.ins().getHttpAsync(
-          "article/list/$_page/json");
+      var data =
+          await ApiService.ins().getHttpAsync("article/list/$_page/json");
       mList.addAll(data["datas"] ?? []);
-      setState(() {
-        _state =
-        mList.isEmpty ? PageStateView.showEmpty : PageStateView.showContent;
-      });
+      _state =
+          mList.isEmpty ? PageStateView.showEmpty : PageStateView.showContent;
     } on ApiException catch (e) {
       e.msg?.toast();
     } finally {
       _refreshController.loadComplete();
+      if (mounted) {
+        invalidate();
+      }
     }
   }
 }

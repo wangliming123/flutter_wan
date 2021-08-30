@@ -22,12 +22,14 @@ class MainState<MainPage> extends BaseState {
   @override
   Widget getLayout() {
     return WillPopScope(child: Scaffold(
-      body: Stack(
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          SizedBox(height: ScreenUtil().statusBarHeight),
           IndexedStack(
             index: _index,
             children: _widgets,
-          ),
+          ).padding(top: 8.w).expanded(),
           // PageView(
           //   scrollDirection: Axis.horizontal,
           //   physics: ClampingScrollPhysics(),

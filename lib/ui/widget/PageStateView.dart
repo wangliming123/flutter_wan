@@ -32,28 +32,28 @@ class PageStateView extends StatelessWidget {
             height: 30.w,
             image: AssetImage("images/loading_icon.gif"),
           ),
-        ).expanded().visible(state == showLoading),
+        ).visible(state == showLoading),
         Container(
           alignment: Alignment.center,
           child: UiUtils.text(
-            "暂无数据 o(╥﹏╥)o \n 点击屏幕重新加载",
+            "暂无数据 o(╥﹏╥)o \n 点击重新加载",
             20.sp,
             ColorRes.textColorSecondary,
             textAlign: TextAlign.center,
           ),
-        ).expanded().onTap(() => {onEmptyClick?.call()}).visible(state == showEmpty),
+        ).onTap(() => {onEmptyClick?.call()}).visible(state == showEmpty),
         Container(
           alignment: Alignment.center,
           child: UiUtils.text(
-            "加载失败 o(╥﹏╥)o \n 点击屏幕重新加载",
+            "加载失败 o(╥﹏╥)o \n 点击重新加载",
             20.sp,
             ColorRes.textColorSecondary,
             textAlign: TextAlign.center,
           ),
-        ).expanded().onTap(() => {onErrorClick?.call()}).visible(state == showError),
+        ).onTap(() => {onErrorClick?.call()}).visible(state == showError),
         Container(
           child: contentView,
-        ).expanded().visible(state == showContent),
+        ).visible(state == showContent),
       ],
     );
   }
