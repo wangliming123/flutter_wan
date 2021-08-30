@@ -1,16 +1,31 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_wan/base/BaseState.dart';
+import 'package:flutter_wan/common/Const.dart';
 import 'package:flutter_wan/common/values.dart';
+import 'package:flutter_wan/http/ApiException.dart';
+import 'package:flutter_wan/http/ApiService.dart';
 import 'package:flutter_wan/util/Extension.dart';
+import 'package:flutter_wan/util/SpUtils.dart';
 import 'package:flutter_wan/util/UiUtils.dart';
 
-class ItemArticle extends StatelessWidget {
+class ItemArticle extends StatefulWidget {
   dynamic article;
 
   ItemArticle(this.article);
 
   @override
-  Widget build(BuildContext context) {
+  State<StatefulWidget> createState() {
+    return ItemArticleState(article);
+  }
+}
+
+class ItemArticleState<ItemArticle> extends BaseState {
+  dynamic article;
+  ItemArticleState(this.article);
+
+  @override
+  Widget getLayout() {
     var chapter = "";
     if (article["superChapterName"] != null &&
         article["superChapterName"].toString().isNotEmpty) {
@@ -53,7 +68,7 @@ class ItemArticle extends StatelessWidget {
                 ).visible(article["isTop"] ?? false),
                 Spacer(),
                 UiUtils.text(
-                        article["niceDate"], 12.sp, ColorRes.textColorSecondary)
+                    article["niceDate"], 12.sp, ColorRes.textColorSecondary)
                     .paddingAll(3.w),
               ],
             ),
@@ -63,7 +78,7 @@ class ItemArticle extends StatelessWidget {
               children: [
                 UiUtils.buildImagePure(article["envelopePic"], width: 100.w)
                     .visible(article["envelopePic"] != null &&
-                        article["envelopePic"].toString().isNotEmpty),
+                    article["envelopePic"].toString().isNotEmpty),
                 Column(
                   children: [
                     UiUtils.htmlText(
@@ -87,7 +102,7 @@ class ItemArticle extends StatelessWidget {
                   IconData(article["collect"] ? 58959 : 58960,
                       fontFamily: "iconfont1"),
                   color: Colors.red,
-                ).padding(top: 5.w, bottom: 5.w, right: 20.w)
+                ).padding(top: 5.w, bottom: 5.w, right: 20.w).onTap(() => _collectArticle())
               ],
             )
           ],
@@ -96,5 +111,33 @@ class ItemArticle extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  _collectArticle() async {
+    bool isLogin = await SpUtils.getInstance().getBool(SpConst.isLogin) ?? false;
+    if (!isLogin) {
+      Navigator.pushNamedAndRemoveUntil(context, RouteConst.loginPage, (route) => false);
+      return;
+    }
+    try {
+      if (article["collect"]) {
+        article["collect"] = false;
+        invalidate();
+        await ApiService.ins().postHttpAsync(
+            "lg/collect/${article["id"]}/json");
+      } else {
+        article["collect"] = true;
+        invalidate();
+        await ApiService.ins().postHttpAsync(
+            "lg/uncollect_originId/${article["id"]}/json");
+      }
+    } on ApiException catch(e) {
+      e.msg?.toast();
+    }
+  }
+
+  @override
+  void initData() {
+
   }
 }

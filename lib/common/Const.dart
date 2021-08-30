@@ -7,6 +7,9 @@ class RouteConst {
 
 class SpConst {
   static final isLogin = "is_login";
+  static final userId = "userId";
+  static final username = "username";
+  static final password = "password";
 
   static final cookie = "cookie";
 }

@@ -1,4 +1,3 @@
-
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -13,12 +12,15 @@ import 'package:flutter_wan/util/CommonUtils.dart';
 
 Future<void> main() async {
   if (Platform.isAndroid) {
-    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+    SystemChrome.setSystemUIOverlayStyle(
+      SystemUiOverlayStyle(
         statusBarColor: Colors.transparent,
         systemNavigationBarDividerColor: Colors.transparent,
         systemNavigationBarIconBrightness: Brightness.light,
         statusBarIconBrightness: Brightness.dark,
-        statusBarBrightness: Brightness.light));
+        statusBarBrightness: Brightness.light,
+      ),
+    );
   }
   // 强制竖屏
   WidgetsFlutterBinding.ensureInitialized();
@@ -51,7 +53,7 @@ class MyApp extends StatelessWidget {
   }
 
   PageRoute getRoute(RouteSettings settings) {
-    var routes = <String, WidgetBuilder> {
+    var routes = <String, WidgetBuilder>{
       RouteConst.splashPage: (_) => SplashPage(),
       RouteConst.loginPage: (_) => LoginPage(),
       RouteConst.mainPage: (_) => MainPage(),

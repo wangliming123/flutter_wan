@@ -8,10 +8,9 @@ class AppInterceptor extends Interceptor {
   @override
   Future<void> onRequest(RequestOptions options, RequestInterceptorHandler handler) async {
     String? cookies = await SpUtils.getInstance().getString(SpConst.cookie);
+
     if (cookies != null) {
-      cookies.split(",").forEach((element) {
-        options.headers.addAll({"Cookie": element});
-      });
+      options.headers.addAll({"Cookie": cookies});
     }
     super.onRequest(options, handler);
   }
@@ -21,9 +20,7 @@ class AppInterceptor extends Interceptor {
     var cookies = response.headers.map["Set-Cookie"];
     if (cookies != null && cookies.isNotEmpty) {
       var sb = StringBuffer();
-      cookies.forEach((element) {
-        sb.write("$element,");
-      });
+      sb.writeAll(cookies, ",");
       await SpUtils.getInstance().putString(SpConst.cookie, sb.toString());
     }
     super.onResponse(response, handler);

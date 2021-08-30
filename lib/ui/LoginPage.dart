@@ -166,6 +166,9 @@ class _LoginState<LoginPage> extends BaseState {
           querys: {"username": _username, "password": _password});
       hideCoverLoading();
       SpUtils.getInstance().putBool(SpConst.isLogin, true);
+      SpUtils.getInstance().putString(SpConst.username, _username);
+      SpUtils.getInstance().putString(SpConst.password, _password);
+      SpUtils.getInstance().putInt(SpConst.userId, res["id"]);
       Navigator.pushNamedAndRemoveUntil(
           context, RouteConst.mainPage, (route) => false);
     } on ApiException catch(e) {
@@ -177,13 +180,18 @@ class _LoginState<LoginPage> extends BaseState {
 
   void register() async {
     try {
-      var res = await ApiService.ins().postHttpAsync("user/register", data: {
+      var res = await ApiService.ins().postHttpAsync("user/register", querys: {
         "username": _username,
         "password": _password,
         "repassword": _password
       });
       hideCoverLoading();
-      login();
+      SpUtils.getInstance().putBool(SpConst.isLogin, true);
+      SpUtils.getInstance().putString(SpConst.username, _username);
+      SpUtils.getInstance().putString(SpConst.password, _password);
+      SpUtils.getInstance().putInt(SpConst.userId, res["id"]);
+      Navigator.pushNamedAndRemoveUntil(
+          context, RouteConst.mainPage, (route) => false);
     } on ApiException catch(e) {
       e.toString().toast();
       hideCoverLoading();
