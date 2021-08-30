@@ -1,3 +1,5 @@
+import 'dart:html';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_wan/base/BaseState.dart';
@@ -25,6 +27,9 @@ class ItemArticleState<ItemArticle> extends BaseState {
 
   ItemArticleState(this.article);
 
+  @override
+  void initData() {}
+  
   @override
   Widget getLayout() {
     var chapter = "";
@@ -113,7 +118,7 @@ class ItemArticleState<ItemArticle> extends BaseState {
           left: 10.w,
         ),
       ),
-    );
+    ).onTap(() => _goArticleInfo());
   }
 
   _collectArticle() async {
@@ -141,6 +146,8 @@ class ItemArticleState<ItemArticle> extends BaseState {
     }
   }
 
-  @override
-  void initData() {}
+
+  _goArticleInfo() {
+    Navigator.pushNamed(context, RouteConst.webView, arguments: article["link"]);
+  }
 }

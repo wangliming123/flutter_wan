@@ -6,6 +6,9 @@ import 'package:flutter_wan/util/Extension.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class WebViewPage extends StatefulWidget {
+  String url;
+  WebViewPage(this.url);
+
 
   @override
   State<StatefulWidget> createState() {

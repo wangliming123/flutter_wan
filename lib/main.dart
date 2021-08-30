@@ -8,6 +8,7 @@ import 'package:flutter_wan/http/ApiService.dart';
 import 'package:flutter_wan/ui/LoginPage.dart';
 import 'package:flutter_wan/ui/MainPage.dart';
 import 'package:flutter_wan/ui/SplashPage.dart';
+import 'package:flutter_wan/ui/pages/WebViewPage.dart';
 import 'package:flutter_wan/util/CommonUtils.dart';
 
 Future<void> main() async {
@@ -57,6 +58,10 @@ class MyApp extends StatelessWidget {
       RouteConst.splashPage: (_) => SplashPage(),
       RouteConst.loginPage: (_) => LoginPage(),
       RouteConst.mainPage: (_) => MainPage(),
+      RouteConst.webView: (_) {
+        var url = settings.arguments.toString();
+        return WebViewPage(url);
+      },
     };
     WidgetBuilder builder = routes[settings.name] ?? (_) => SplashPage();
     return MaterialPageRoute(builder: (ctx) => builder(ctx));

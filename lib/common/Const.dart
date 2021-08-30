@@ -3,6 +3,7 @@ class RouteConst {
   static final splashPage = "splash";
   static final loginPage = "login";
   static final mainPage = "main";
+  static final webView = "webView";
 }
 
 class SpConst {
