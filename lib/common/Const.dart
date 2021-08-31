@@ -4,6 +4,9 @@ class RouteConst {
   static final loginPage = "login";
   static final mainPage = "main";
   static final webView = "webView";
+  static final square = "square";
+  static final shareArticle = "shareArticle";
+  static final project = "project";
 }
 
 class SpConst {

@@ -92,7 +92,6 @@ class WebViewState<WebViewPage> extends BaseState {
       },
       onPageStarted: (url) async {
         String? title = await _controller?.getTitle();
-        print("=====webView==== $title");
         if (title != null && title.isNotEmpty) {
           setState(() {
             _title = title;
@@ -101,7 +100,6 @@ class WebViewState<WebViewPage> extends BaseState {
       },
       onPageFinished: (url) async {
         String? title = await _controller?.getTitle();
-        print("=====webView==== $title");
         if (title != null && title.isNotEmpty) {
           setState(() {
             if (_articleTitle == null || _articleTitle!.isEmpty) {

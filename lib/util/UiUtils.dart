@@ -6,9 +6,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_wan/util/Extension.dart';
 
 class UiUtils {
-  static Widget buildImagePure(String? path, {
+  static Widget buildImagePure(
+    String? path, {
     double? width,
     double? height,
     EdgeInsetsGeometry padding = const EdgeInsets.all(0),
@@ -29,20 +31,18 @@ class UiUtils {
         fit: fit,
         width: width,
         height: height,
-        placeholder: (context, url) =>
-            Image(
-              image: AssetImage(placeHolder!),
-              fit: fit,
-              width: width,
-              height: height,
-            ),
-        errorWidget: (context, url, error) =>
-            Image(
-              image: AssetImage(path),
-              fit: fit,
-              width: width,
-              height: height,
-            ),
+        placeholder: (context, url) => Image(
+          image: AssetImage(placeHolder!),
+          fit: fit,
+          width: width,
+          height: height,
+        ),
+        errorWidget: (context, url, error) => Image(
+          image: AssetImage(path),
+          fit: fit,
+          width: width,
+          height: height,
+        ),
       );
     } else if (lowercase.startsWith("images/")) {
       return Image(
@@ -61,14 +61,15 @@ class UiUtils {
     }
   }
 
-  static Widget text(String text,
-      double size,
-      Color color, {
-        FontWeight fontWeight = FontWeight.normal,
-        double fontHeight = 1,
-        TextAlign? textAlign = TextAlign.start,
-        int? maxLines = 100,
-      }) {
+  static Widget text(
+    String text,
+    double size,
+    Color color, {
+    FontWeight fontWeight = FontWeight.normal,
+    double fontHeight = 1,
+    TextAlign? textAlign = TextAlign.start,
+    int? maxLines = 100,
+  }) {
     return Text(
       text,
       textAlign: textAlign,
@@ -85,10 +86,12 @@ class UiUtils {
     );
   }
 
-  static Widget htmlText(String data,
-      double size,
-      Color color,
-      {int? maxLines = 100,}) {
+  static Widget htmlText(
+    String data,
+    double size,
+    Color color, {
+    int? maxLines = 100,
+  }) {
     return Html(
       data: data,
       style: {
@@ -203,5 +206,39 @@ class UiUtils {
       controller: controller,
     );
     return field;
+  }
+
+  static Widget lineTabButton(
+    String text,
+    double textSize, {
+    double? width,
+    double? height,
+    Color backgroundColor = Colors.white,
+    Color textColor = Colors.black87,
+    TextAlign textAlign = TextAlign.left,
+    Widget? leftIcon,
+    Widget? rightIcon,
+    Function? onTap,
+  }) {
+    List<Widget> widgets = [];
+    if (leftIcon != null) {
+      widgets.add(leftIcon.padding(left: 10.w));
+    }
+    var textWidget = UiUtils.text(text, textSize, textColor,
+            textAlign: textAlign, maxLines: 1)
+        .padding(left: 10.w)
+        .expanded();
+    widgets.add(textWidget);
+    if (rightIcon != null) {
+      widgets.add(rightIcon.padding(right: 10.w));
+    }
+    return Container(
+      color: backgroundColor,
+      width: width,
+      height: height,
+      child: Row(
+        children: widgets,
+      ).onTap(() => {onTap?.call()}),
+    );
   }
 }

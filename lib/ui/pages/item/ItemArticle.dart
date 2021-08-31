@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_wan/base/BaseState.dart';
@@ -29,7 +28,7 @@ class ItemArticleState<ItemArticle> extends BaseState {
 
   @override
   void initData() {}
-  
+
   @override
   Widget getLayout() {
     var chapter = "";
@@ -46,9 +45,10 @@ class ItemArticleState<ItemArticle> extends BaseState {
     }
 
     var author = "";
-    if (article["author"] != null) {
+    if (article["author"] != null && article["author"].toString().isNotEmpty) {
       author = article["author"];
-    } else if (article["shareUser"] != null) {
+    } else if (article["shareUser"] != null &&
+        article["shareUser"].toString().isNotEmpty) {
       author = article["shareUser"];
     }
     return Card(
@@ -146,8 +146,8 @@ class ItemArticleState<ItemArticle> extends BaseState {
     }
   }
 
-
   _goArticleInfo() {
-    Navigator.pushNamed(context, RouteConst.webView, arguments: WebUrl(article["link"], article["title"]));
+    Navigator.pushNamed(context, RouteConst.webView,
+        arguments: WebUrl(article["link"], article["title"]));
   }
 }

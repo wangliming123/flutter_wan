@@ -6,6 +6,20 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "3825233",
+      "name": "项目体系",
+      "font_class": "xiangmutixi",
+      "unicode": "e605",
+      "unicode_decimal": 58885
+    },
+    {
+      "icon_id": "1126026",
+      "name": "微信",
+      "font_class": "weixin",
+      "unicode": "e652",
+      "unicode_decimal": 58962
+    },
+    {
       "icon_id": "881789",
       "name": "发现",
       "font_class": "faxian",

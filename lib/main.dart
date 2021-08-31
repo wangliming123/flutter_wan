@@ -8,6 +8,9 @@ import 'package:flutter_wan/http/ApiService.dart';
 import 'package:flutter_wan/ui/LoginPage.dart';
 import 'package:flutter_wan/ui/MainPage.dart';
 import 'package:flutter_wan/ui/SplashPage.dart';
+import 'package:flutter_wan/ui/pages/ProjectPage.dart';
+import 'package:flutter_wan/ui/pages/ShareArticlePage.dart';
+import 'package:flutter_wan/ui/pages/SquarePage.dart';
 import 'package:flutter_wan/ui/pages/WebViewPage.dart';
 import 'package:flutter_wan/util/CommonUtils.dart';
 
@@ -62,6 +65,9 @@ class MyApp extends StatelessWidget {
         var webUrl = settings.arguments as WebUrl;
         return WebViewPage(webUrl.url, webUrl.title);
       },
+      RouteConst.square: (_) => SquarePage(),
+      RouteConst.shareArticle: (_) => ShareArticlePage(),
+      RouteConst.project: (_) => ProjectPage(),
     };
     WidgetBuilder builder = routes[settings.name] ?? (_) => SplashPage();
     return MaterialPageRoute(builder: (ctx) => builder(ctx));
