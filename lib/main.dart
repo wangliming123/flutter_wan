@@ -59,8 +59,8 @@ class MyApp extends StatelessWidget {
       RouteConst.loginPage: (_) => LoginPage(),
       RouteConst.mainPage: (_) => MainPage(),
       RouteConst.webView: (_) {
-        var url = settings.arguments.toString();
-        return WebViewPage(url);
+        var webUrl = settings.arguments as WebUrl;
+        return WebViewPage(webUrl.url, webUrl.title);
       },
     };
     WidgetBuilder builder = routes[settings.name] ?? (_) => SplashPage();

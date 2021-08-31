@@ -1,4 +1,3 @@
-import 'dart:html';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -7,12 +6,13 @@ import 'package:flutter_wan/common/Const.dart';
 import 'package:flutter_wan/common/values.dart';
 import 'package:flutter_wan/http/ApiException.dart';
 import 'package:flutter_wan/http/ApiService.dart';
+import 'package:flutter_wan/ui/pages/WebViewPage.dart';
 import 'package:flutter_wan/util/Extension.dart';
 import 'package:flutter_wan/util/SpUtils.dart';
 import 'package:flutter_wan/util/UiUtils.dart';
 
 class ItemArticle extends StatefulWidget {
-  dynamic article;
+  final dynamic article;
 
   ItemArticle(this.article);
 
@@ -148,6 +148,6 @@ class ItemArticleState<ItemArticle> extends BaseState {
 
 
   _goArticleInfo() {
-    Navigator.pushNamed(context, RouteConst.webView, arguments: article["link"]);
+    Navigator.pushNamed(context, RouteConst.webView, arguments: WebUrl(article["link"], article["title"]));
   }
 }

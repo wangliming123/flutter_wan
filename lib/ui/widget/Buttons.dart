@@ -4,7 +4,6 @@ import 'package:flutter_wan/base/BaseState.dart';
 import 'package:flutter_wan/common/values.dart';
 import 'package:flutter_wan/util/Extension.dart';
 import 'package:flutter_wan/util/UiUtils.dart';
-import 'package:flutter_wan/util/styleUtils.dart';
 
 class CommonButton extends StatelessWidget {
 //可点击时背景色
@@ -26,7 +25,7 @@ class CommonButton extends StatelessWidget {
   double _botMargin = 0;
 
   //点击回调
-  Function? _onTap = null;
+  Function? _onTap;
 
   //------------必须参数-----------
   //是否可点击

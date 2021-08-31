@@ -26,6 +26,12 @@ extension WidgetEx on Widget {
     );
   }
 
+  Widget center() {
+    return Center(
+      child: this,
+    );
+  }
+
   Widget expanded({int flex = 1}) {
     return Expanded(
       child: this,

@@ -12,8 +12,8 @@ class PageStateView extends StatelessWidget {
 
   final Widget contentView;
   int state;
-  Function? onEmptyClick;
-  Function? onErrorClick;
+  final Function? onEmptyClick;
+  final Function? onErrorClick;
 
   PageStateView(
       {required this.contentView,

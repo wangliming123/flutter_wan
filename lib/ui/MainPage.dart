@@ -22,10 +22,11 @@ class MainState<MainPage> extends BaseState {
   @override
   Widget getLayout() {
     return WillPopScope(child: Scaffold(
+      backgroundColor: ColorRes.defaultBg,
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          SizedBox(height: ScreenUtil().statusBarHeight),
+          Container(height: ScreenUtil().statusBarHeight, color: Colors.white,),
           IndexedStack(
             index: _index,
             children: _widgets,

@@ -1,6 +1,4 @@
 
-import 'dart:collection';
-
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SpUtils {

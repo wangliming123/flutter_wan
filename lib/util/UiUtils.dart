@@ -14,6 +14,7 @@ class UiUtils {
     EdgeInsetsGeometry padding = const EdgeInsets.all(0),
     EdgeInsetsGeometry margin = const EdgeInsets.all(0),
     String? placeHolder,
+    BoxFit fit = BoxFit.cover,
   }) {
     if (path == null) {
       return Container();
@@ -25,20 +26,20 @@ class UiUtils {
       placeHolder = placeHolder ?? "images/default_pic.png";
       return CachedNetworkImage(
         imageUrl: path,
-        fit: BoxFit.cover,
+        fit: fit,
         width: width,
         height: height,
         placeholder: (context, url) =>
             Image(
               image: AssetImage(placeHolder!),
-              fit: BoxFit.cover,
+              fit: fit,
               width: width,
               height: height,
             ),
         errorWidget: (context, url, error) =>
             Image(
               image: AssetImage(path),
-              fit: BoxFit.cover,
+              fit: fit,
               width: width,
               height: height,
             ),
@@ -46,14 +47,14 @@ class UiUtils {
     } else if (lowercase.startsWith("images/")) {
       return Image(
         image: AssetImage(path),
-        fit: BoxFit.cover,
+        fit: fit,
         width: width,
         height: height,
       );
     } else {
       return Image(
         image: FileImage(File(path)),
-        fit: BoxFit.cover,
+        fit: fit,
         width: width,
         height: height,
       );

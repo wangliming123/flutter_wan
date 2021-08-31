@@ -21,6 +21,9 @@ class ColorRes {
   static final colorPrimary = "#1296db".color;
   static final textColorPrimary = "#333333".color;
   static final textColorSecondary = "#99000000".color;
+  static final defaultBg = "#f3f4f5".color;
+  static final progressBg = "#ffedeff2".color;
+  static final progressValueColor = "#ff399afb".color;
 }
 
 class StringRes {
