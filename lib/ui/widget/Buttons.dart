@@ -132,7 +132,7 @@ class CommonButton2 extends StatefulWidget {
   }
 }
 
-class CommonButtonState<CommonButton2> extends BaseState {
+class CommonButtonState extends BaseState<CommonButton2> {
   String text;
   double textSize;
   double height;

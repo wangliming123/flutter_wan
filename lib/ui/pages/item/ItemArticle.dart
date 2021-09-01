@@ -21,7 +21,7 @@ class ItemArticle extends StatefulWidget {
   }
 }
 
-class ItemArticleState<ItemArticle> extends BaseState {
+class ItemArticleState extends BaseState<ItemArticle> {
   dynamic article;
 
   ItemArticleState(this.article);

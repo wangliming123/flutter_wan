@@ -14,7 +14,7 @@ class MainPage extends StatefulWidget {
   }
 }
 
-class MainState<MainPage> extends BaseState {
+class MainState extends BaseState<MainPage> {
   var _index = 0;
   List<Widget> _widgets = [HomePage(), DiscoverPage(), MinePage()];
 

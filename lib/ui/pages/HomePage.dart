@@ -21,7 +21,7 @@ class HomePage extends StatefulWidget {
   }
 }
 
-class _HomeState<HomePage> extends BaseState {
+class _HomeState extends BaseState<HomePage> {
   int _state = PageStateView.showLoading;
   int _page = 0;
   int _pageCount = -1;
@@ -108,10 +108,11 @@ class _HomeState<HomePage> extends BaseState {
           element["isTop"] = true;
         });
       }
+      _page = 0;
       var data =
           await ApiService.ins().getHttpAsync("article/list/$_page/json");
       _pageCount = data["pageCount"] ?? -1;
-      _page = 1;
+      _page++;
       mList.clear();
       if (bannerList.isNotEmpty) {
         dynamic banner = {"isBanner": true};

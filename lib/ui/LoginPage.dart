@@ -17,7 +17,7 @@ class LoginPage extends StatefulWidget {
   }
 }
 
-class _LoginState<LoginPage> extends BaseState {
+class _LoginState extends BaseState<LoginPage> {
   FocusNode _usernameFocus = FocusNode();
   FocusNode _passwordFocus = FocusNode();
   String _username = "";

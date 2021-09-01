@@ -25,7 +25,7 @@ class WebViewPage extends StatefulWidget {
   }
 }
 
-class WebViewState<WebViewPage> extends BaseState {
+class WebViewState extends BaseState<WebViewPage> {
   String _title = "加载中...";
   String? _articleTitle;
   double _progress = 0;
@@ -82,9 +82,10 @@ class WebViewState<WebViewPage> extends BaseState {
       javascriptMode: JavascriptMode.unrestricted,
       onWebViewCreated: (controller) {
         _controller = controller;
-        _controller?.clearCache();
-        _controller?.loadUrl(url);
+        // _controller?.clearCache();
+        // _controller?.loadUrl(url);
       },
+      initialUrl: url,
       onProgress: (progress) {
         setState(() {
           _progress = progress.toDouble() / 100;
@@ -112,6 +113,7 @@ class WebViewState<WebViewPage> extends BaseState {
         }
       },
       navigationDelegate: (nav) {
+        print('===url=== ${nav.url}');
         if (nav.url.startsWith("http:") || nav.url.startsWith("https:")) {
           return NavigationDecision.navigate;
         }

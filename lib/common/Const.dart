@@ -6,6 +6,8 @@ class RouteConst {
   static final webView = "webView";
   static final square = "square";
   static final shareArticle = "shareArticle";
+  static final knowledgeTree = "knowledgeTree";
+  static final knowledgeInfo = "knowledgeInfo";
   static final project = "project";
 }
 

@@ -11,7 +11,7 @@ class PageStateView extends StatelessWidget {
   static const int showError = 3;
 
   final Widget contentView;
-  int state;
+  final int state;
   final Function? onEmptyClick;
   final Function? onErrorClick;
 

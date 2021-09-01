@@ -11,7 +11,7 @@ class ProjectPage extends StatefulWidget {
   }
 }
 
-class ProjectState<ProjectPage> extends BaseState {
+class ProjectState extends BaseState<ProjectPage> {
   List<Widget> _tabs = [];
 
   @override

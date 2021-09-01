@@ -14,7 +14,7 @@ class ShareArticlePage extends StatefulWidget {
   }
 }
 
-class ShareArticleState<ShareArticlePage> extends BaseState {
+class ShareArticleState extends BaseState<ShareArticlePage> {
   String _title = "";
   String _link = "";
   String _tipText = "";

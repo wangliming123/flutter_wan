@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_wan/base/BaseState.dart';
-import 'package:flutter_wan/common/Const.dart';
 import 'package:flutter_wan/common/values.dart';
 import 'package:flutter_wan/http/ApiException.dart';
 import 'package:flutter_wan/http/ApiService.dart';
@@ -9,70 +8,66 @@ import 'package:flutter_wan/ui/widget/PageStateView.dart';
 import 'package:flutter_wan/util/Extension.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
-import 'item/ItemArticle.dart';
+import 'ItemArticle.dart';
 
-class SquarePage extends StatefulWidget {
+class ItemKnowledgeView extends StatefulWidget {
+  final int knowledgeId;
+
+  ItemKnowledgeView(this.knowledgeId);
+
   @override
   State<StatefulWidget> createState() {
-    return SquareState();
+    return _ItemKnowledgeState();
   }
 }
 
-class SquareState extends BaseState<SquarePage> {
+class _ItemKnowledgeState extends BaseState<ItemKnowledgeView> with AutomaticKeepAliveClientMixin {
   int _state = PageStateView.showLoading;
   int _page = 0;
   int _pageCount = -1;
+
   List<dynamic> mList = [];
 
   RefreshController _refreshController = RefreshController();
 
   @override
+  Widget build(BuildContext context) {
+    super.build(context);
+    ScreenUtil.init(
+      BoxConstraints(
+        maxWidth: MediaQuery.of(context).size.width,
+        maxHeight: MediaQuery.of(context).size.height,
+      ),
+      designSize: Size(375, 668),
+    );
+    return getLayout();
+  }
+  @override
   Widget getLayout() {
-    return Scaffold(
-      body: Container(
-        color: ColorRes.defaultBg,
-        child: Column(
-          children: [
-            Container(
-              height: ScreenUtil().statusBarHeight,
-              color: Colors.white,
-            ),
-            PageStateView(
-              state: _state,
-              onEmptyClick: initData,
-              onErrorClick: initData,
-              contentView: SmartRefresher(
-                controller: _refreshController,
-                enablePullUp: true,
-                onRefresh: _onRefresh,
-                onLoading: _loadMore,
-                child: ListView.builder(
-                  itemCount: mList.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    return ItemArticle(mList[index]);
-                  },
-                ),
-              ),
-            ).expanded(),
-          ],
+    return PageStateView(
+      state: _state,
+      onEmptyClick: initData,
+      onErrorClick: initData,
+      contentView: SmartRefresher(
+        controller: _refreshController,
+        enablePullUp: true,
+        onRefresh: _onRefresh,
+        onLoading: _loadMore,
+        child: ListView.builder(
+          itemCount: mList.length,
+          itemBuilder: (BuildContext context, int index) {
+            return ItemArticle(mList[index]);
+          },
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-          child: Icon(Icons.add),
-          onPressed: () {
-            Navigator.pushNamed(context, RouteConst.shareArticle);
-          }),
     );
   }
 
   @override
   void initData() async {
     try {
-      setState(() {
-        _state = PageStateView.showLoading;
-      });
-      var data =
-          await ApiService.ins().getHttpAsync("user_article/list/$_page/json");
+      var data = await ApiService.ins()
+          .getHttpAsync("article/list/$_page/json?cid=${widget.knowledgeId}");
       _pageCount = data["pageCount"] ?? -1;
       _page++;
       mList.addAll(data["datas"] ?? []);
@@ -91,11 +86,11 @@ class SquareState extends BaseState<SquarePage> {
   void _onRefresh() async {
     try {
       _page = 0;
-      var data =
-          await ApiService.ins().getHttpAsync("user_article/list/$_page/json");
-      mList.clear();
-      _pageCount = data["pageCount"] ?? -1;
+      var data = await ApiService.ins()
+          .getHttpAsync("article/list/$_page/json?cid=${widget.knowledgeId}");
       _page++;
+      _pageCount = data["pageCount"] ?? -1;
+      mList.clear();
       mList.addAll(data["datas"] ?? []);
       _state =
           mList.isEmpty ? PageStateView.showEmpty : PageStateView.showContent;
@@ -116,8 +111,10 @@ class SquareState extends BaseState<SquarePage> {
         StringRes.noMoreData.toast();
         return;
       }
-      var data =
-          await ApiService.ins().getHttpAsync("user_article/list/$_page/json");
+      var data = await ApiService.ins()
+          .getHttpAsync("article/list/$_page/json?cid=${widget.knowledgeId}");
+      _page++;
+      _pageCount = data["pageCount"] ?? -1;
       mList.addAll(data["datas"] ?? []);
       _state =
           mList.isEmpty ? PageStateView.showEmpty : PageStateView.showContent;
@@ -130,4 +127,7 @@ class SquareState extends BaseState<SquarePage> {
       }
     }
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }

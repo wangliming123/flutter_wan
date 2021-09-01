@@ -24,13 +24,13 @@ class DiscoverPage extends StatelessWidget {
           },
         ).padding(top: 5.w, bottom: 5.w),
         UiUtils.lineTabButton(
-          "体系",
+          "知识体系",
           16.sp,
           textColor: ColorRes.textColorPrimary,
           height: 50.w,
           leftIcon: Icon(IconData(58885, fontFamily: "iconfont1"), size: 25.w),
           rightIcon: Icon(Icons.keyboard_arrow_right),
-          onTap: () {},
+          onTap: () {Navigator.pushNamed(context, RouteConst.knowledgeTree);},
         ).padding(top: 5.w, bottom: 5.w),
         UiUtils.lineTabButton(
           "项目",
