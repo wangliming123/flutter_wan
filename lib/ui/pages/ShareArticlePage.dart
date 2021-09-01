@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_wan/base/BaseState.dart';
+import 'package:flutter_wan/common/values.dart';
 import 'package:flutter_wan/http/ApiException.dart';
 import 'package:flutter_wan/http/ApiService.dart';
 import 'package:flutter_wan/ui/widget/Buttons.dart';
@@ -70,6 +71,21 @@ class ShareArticleState extends BaseState<ShareArticlePage> {
   @override
   Widget getLayout() {
     return Scaffold(
+      appBar: AppBar(
+        leading: IconButton(
+          icon: Icon(
+            Icons.arrow_back,
+            color: ColorRes.textColorPrimary,
+          ),
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+        ),
+        toolbarHeight: 50.w,
+        title:
+        UiUtils.text("分享", 18.sp, ColorRes.textColorPrimary, maxLines: 1),
+        backgroundColor: Colors.white,
+      ),
       body: Container(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,

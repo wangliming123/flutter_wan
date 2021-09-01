@@ -37,7 +37,7 @@ class KnowledgeInfoState extends BaseState<KnowledgeInfoPage>
             Navigator.of(context).pop();
           },
         ),
-        toolbarHeight: 80.w,
+        toolbarHeight: 90.w,
         title: UiUtils.text(
             widget.knowledge["name"], 18.sp, ColorRes.textColorPrimary,
             maxLines: 1),

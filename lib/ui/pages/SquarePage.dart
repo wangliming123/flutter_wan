@@ -7,6 +7,7 @@ import 'package:flutter_wan/http/ApiException.dart';
 import 'package:flutter_wan/http/ApiService.dart';
 import 'package:flutter_wan/ui/widget/PageStateView.dart';
 import 'package:flutter_wan/util/Extension.dart';
+import 'package:flutter_wan/util/UiUtils.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 import 'item/ItemArticle.dart';
@@ -29,32 +30,39 @@ class SquareState extends BaseState<SquarePage> {
   @override
   Widget getLayout() {
     return Scaffold(
+      appBar: AppBar(
+        leading: IconButton(
+          icon: Icon(
+            Icons.arrow_back,
+            color: ColorRes.textColorPrimary,
+          ),
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+        ),
+        toolbarHeight: 50.w,
+        title:
+            UiUtils.text("广场", 18.sp, ColorRes.textColorPrimary, maxLines: 1),
+        backgroundColor: Colors.white,
+      ),
       body: Container(
         color: ColorRes.defaultBg,
-        child: Column(
-          children: [
-            Container(
-              height: ScreenUtil().statusBarHeight,
-              color: Colors.white,
+        child: PageStateView(
+          state: _state,
+          onEmptyClick: initData,
+          onErrorClick: initData,
+          contentView: SmartRefresher(
+            controller: _refreshController,
+            enablePullUp: true,
+            onRefresh: _onRefresh,
+            onLoading: _loadMore,
+            child: ListView.builder(
+              itemCount: mList.length,
+              itemBuilder: (BuildContext context, int index) {
+                return ItemArticle(mList[index]);
+              },
             ),
-            PageStateView(
-              state: _state,
-              onEmptyClick: initData,
-              onErrorClick: initData,
-              contentView: SmartRefresher(
-                controller: _refreshController,
-                enablePullUp: true,
-                onRefresh: _onRefresh,
-                onLoading: _loadMore,
-                child: ListView.builder(
-                  itemCount: mList.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    return ItemArticle(mList[index]);
-                  },
-                ),
-              ),
-            ).expanded(),
-          ],
+          ),
         ),
       ),
       floatingActionButton: FloatingActionButton(
