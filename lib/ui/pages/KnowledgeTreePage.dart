@@ -4,14 +4,14 @@ import 'package:flutter_wan/base/BaseState.dart';
 import 'package:flutter_wan/common/values.dart';
 import 'package:flutter_wan/util/UiUtils.dart';
 
-class ProjectPage extends StatefulWidget {
+class KnowledgeTreePage extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
-    return ProjectState();
+    return KnowledgeTreeState();
   }
 }
 
-class ProjectState<ProjectPage> extends BaseState {
+class KnowledgeTreeState<KnowledgeTreePage> extends BaseState {
   List<Widget> _tabs = [];
 
   @override
@@ -29,14 +29,10 @@ class ProjectState<ProjectPage> extends BaseState {
         ),
         toolbarHeight: 50.w,
         title:
-            UiUtils.text("项目", 18.sp, ColorRes.textColorPrimary, maxLines: 1),
+            UiUtils.text("知识体系", 18.sp, ColorRes.textColorPrimary, maxLines: 1),
         backgroundColor: Colors.white,
-        bottom: TabBar(
-            tabs: _tabs,
-            isScrollable: true,
-            indicatorColor: Colors.white,
-            labelColor: Colors.black26),
       ),
+      body: Container(),
     );
   }
 

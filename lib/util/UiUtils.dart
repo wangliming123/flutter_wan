@@ -238,7 +238,7 @@ class UiUtils {
       height: height,
       child: Row(
         children: widgets,
-      ).onTap(() => {onTap?.call()}),
-    );
+      ),
+    ).onTap(() => {onTap?.call()});
   }
 }

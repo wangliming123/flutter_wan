@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_wan/base/BaseState.dart';
@@ -34,7 +33,10 @@ class SquareState<SquarePage> extends BaseState {
         color: ColorRes.defaultBg,
         child: Column(
           children: [
-            Container(height: ScreenUtil().statusBarHeight, color: Colors.white,),
+            Container(
+              height: ScreenUtil().statusBarHeight,
+              color: Colors.white,
+            ),
             PageStateView(
               state: _state,
               onEmptyClick: initData,
@@ -55,9 +57,11 @@ class SquareState<SquarePage> extends BaseState {
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(onPressed: () {
-        Navigator.pushNamed(context, RouteConst.shareArticle);
-      }),
+      floatingActionButton: FloatingActionButton(
+          child: Icon(Icons.add),
+          onPressed: () {
+            Navigator.pushNamed(context, RouteConst.shareArticle);
+          }),
     );
   }
 

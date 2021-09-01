@@ -2,15 +2,21 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_wan/common/Const.dart';
+import 'package:flutter_wan/http/ApiService.dart';
 import 'package:flutter_wan/util/SpUtils.dart';
 
 class SplashPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+
     Future.delayed(Duration(milliseconds: 1000)).then((value) async {
       bool isLogin = await SpUtils.getInstance().getBool(SpConst.isLogin) ?? false;
       print('isLogon $isLogin');
       if (isLogin) {
+        String username = await SpUtils.getInstance().getString(SpConst.username);
+        String password = await SpUtils.getInstance().getString(SpConst.password);
+        ApiService.ins().postHttpAsync("user/login",
+            querys: {"username": username, "password": password});
         Navigator.pushNamedAndRemoveUntil(
             context, RouteConst.mainPage, (route) => false);
       } else {

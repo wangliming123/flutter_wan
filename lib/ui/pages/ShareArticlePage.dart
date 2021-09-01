@@ -1,8 +1,8 @@
-
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_wan/base/BaseState.dart';
+import 'package:flutter_wan/http/ApiException.dart';
+import 'package:flutter_wan/http/ApiService.dart';
 import 'package:flutter_wan/ui/widget/Buttons.dart';
 import 'package:flutter_wan/util/Extension.dart';
 import 'package:flutter_wan/util/UiUtils.dart';
@@ -12,11 +12,9 @@ class ShareArticlePage extends StatefulWidget {
   State<StatefulWidget> createState() {
     return ShareArticleState();
   }
-
 }
 
 class ShareArticleState<ShareArticlePage> extends BaseState {
-
   String _title = "";
   String _link = "";
   String _tipText = "";
@@ -30,8 +28,43 @@ class ShareArticleState<ShareArticlePage> extends BaseState {
     _link = value;
   }
 
-  void _shareArticle() {
+  void _shareArticle() async {
+    if (!checkValid()) {
+      return;
+    }
+    try {
+      var body = {"title": _title, "link": _link};
+      await ApiService.ins().postHttpAsync("lg/user_article/add/json", querys: body);
+      Navigator.pop(context);
+    } on ApiException catch(e) {
+      e.msg?.toast();
+    }
+  }
 
+  bool checkValid() {
+    if (_title.isEmpty) {
+      setState(() {
+        _tipVisible = true;
+        _tipText = "文章标题不能为空";
+      });
+      return false;
+    }
+    if (_link.isEmpty) {
+      setState(() {
+        _tipVisible = true;
+        _tipText = "文章链接不能为空";
+      });
+      return false;
+    }
+    if (!_link.startsWith("http://") && !_link.startsWith("https://")) {
+      setState(() {
+        _tipVisible = true;
+        _tipText = "文章链接必须以http://或https://开头";
+      });
+      return false;
+    }
+    _tipVisible = false;
+    return true;
   }
 
   @override
@@ -40,7 +73,7 @@ class ShareArticleState<ShareArticlePage> extends BaseState {
       body: Container(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
               margin: EdgeInsets.only(left: 20.w, right: 20.w),
@@ -67,9 +100,8 @@ class ShareArticleState<ShareArticlePage> extends BaseState {
               margin: EdgeInsets.only(left: 20.w, top: 30.w, right: 20.w),
               height: 45.w,
               child: UiUtils.buildTextField(
-                obscureText: true,
                 textAlign: TextAlign.start,
-                inputType: TextInputType.visiblePassword,
+                inputType: TextInputType.url,
                 text: _link,
                 textColor: "#333333".color,
                 hintColor: "#8d8d8d".color,
@@ -87,7 +119,7 @@ class ShareArticleState<ShareArticlePage> extends BaseState {
               color: "#E2E2E2".color,
             ),
             Container(
-              margin: EdgeInsets.only(left: 30.w, top: 8.w),
+              margin: EdgeInsets.only(left: 20.w, top: 8.w),
               height: 20.w,
               child: Text(
                 _tipText,
@@ -97,26 +129,24 @@ class ShareArticleState<ShareArticlePage> extends BaseState {
             Row(
               children: [
                 Padding(
-                  padding:
-                  EdgeInsets.only(left: 20.w, top: 30.w, right: 10),
+                  padding: EdgeInsets.only(left: 20.w, top: 30.w, right: 10),
                   child: CommonButton(
                     enabled: true,
                     text: "分享",
-                    height: 50.w,
+                    height: 45.w,
                     radius: 50.w,
                     textSize: 18.sp,
-                    onTap: _shareArticle,
+                    onTap: () => _shareArticle(),
                   ),
                 ).expanded(),
                 Padding(
-                  padding:
-                  EdgeInsets.only(left:10, top: 30.w, right: 20.w),
+                  padding: EdgeInsets.only(left: 10, top: 30.w, right: 20.w),
                   child: CommonButton(
-                    text: "取消",
-                    height: 50.w,
-                    radius: 50.w,
-                    textSize: 18,
                     enabled: true,
+                    text: "取消",
+                    height: 45.w,
+                    radius: 50.w,
+                    textSize: 18.sp,
                     enableColor: Colors.grey,
                     onTap: () {
                       Navigator.pop(context);
@@ -124,9 +154,7 @@ class ShareArticleState<ShareArticlePage> extends BaseState {
                   ),
                 ).expanded(),
               ],
-            )
-
-
+            ),
           ],
         ),
       ),
