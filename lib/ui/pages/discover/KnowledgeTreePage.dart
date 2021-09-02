@@ -8,7 +8,6 @@ import 'package:flutter_wan/ui/pages/item/ItemKnowledgeTree.dart';
 import 'package:flutter_wan/ui/widget/PageStateView.dart';
 import 'package:flutter_wan/util/Extension.dart';
 import 'package:flutter_wan/util/UiUtils.dart';
-import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class KnowledgeTreePage extends StatefulWidget {
   @override
@@ -20,7 +19,6 @@ class KnowledgeTreePage extends StatefulWidget {
 class KnowledgeTreeState extends BaseState<KnowledgeTreePage> {
   int _state = PageStateView.showLoading;
   List<dynamic> mList = [];
-  RefreshController _refreshController = RefreshController();
 
   @override
   Widget getLayout() {
@@ -75,5 +73,4 @@ class KnowledgeTreeState extends BaseState<KnowledgeTreePage> {
     }
   }
 
-  void _onRefresh() {}
 }

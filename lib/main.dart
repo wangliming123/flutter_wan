@@ -8,15 +8,19 @@ import 'package:flutter_wan/http/ApiService.dart';
 import 'package:flutter_wan/ui/LoginPage.dart';
 import 'package:flutter_wan/ui/MainPage.dart';
 import 'package:flutter_wan/ui/SplashPage.dart';
-import 'package:flutter_wan/ui/pages/KnowledgeInfoPage.dart';
-import 'package:flutter_wan/ui/pages/KnowledgeTreePage.dart';
-import 'package:flutter_wan/ui/pages/ProjectPage.dart';
-import 'package:flutter_wan/ui/pages/ShareArticlePage.dart';
-import 'package:flutter_wan/ui/pages/SquarePage.dart';
+import 'package:flutter_wan/ui/pages/discover/KnowledgeInfoPage.dart';
+import 'package:flutter_wan/ui/pages/discover/KnowledgeTreePage.dart';
+import 'package:flutter_wan/ui/pages/discover/ProjectPage.dart';
+import 'package:flutter_wan/ui/pages/discover/ShareArticlePage.dart';
+import 'package:flutter_wan/ui/pages/discover/SquarePage.dart';
 import 'package:flutter_wan/ui/pages/WebViewPage.dart';
+import 'package:flutter_wan/ui/pages/mine/CollectPage.dart';
+import 'package:flutter_wan/ui/pages/mine/UserSharePage.dart';
 import 'package:flutter_wan/util/CommonUtils.dart';
 
 Future<void> main() async {
+  runApp(MyApp());
+  //设置Android端状态栏透明，状态栏文字默认为黑色
   if (Platform.isAndroid) {
     SystemChrome.setSystemUIOverlayStyle(
       SystemUiOverlayStyle(
@@ -33,7 +37,6 @@ Future<void> main() async {
   await SystemChrome.setPreferredOrientations(
       [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
   ApiService.ins().init();
-  runApp(MyApp());
 }
 
 final GlobalKey<NavigatorState> navigatorKey = new GlobalKey<NavigatorState>();
@@ -71,9 +74,13 @@ class MyApp extends StatelessWidget {
       RouteConst.shareArticle: (_) => ShareArticlePage(),
       RouteConst.knowledgeTree: (_) => KnowledgeTreePage(),
       RouteConst.knowledgeInfo: (_) {
-        return KnowledgeInfoPage(settings.arguments);
+        dynamic map = settings.arguments;
+        return KnowledgeInfoPage(knowledge: map["knowledge"], id: map["id"],);
       },
       RouteConst.project: (_) => ProjectPage(),
+
+      RouteConst.collect: (_) => CollectPage(),
+      RouteConst.userShare: (_) => UserSharePage(),
     };
     WidgetBuilder builder = routes[settings.name] ?? (_) => SplashPage();
     return MaterialPageRoute(builder: (ctx) => builder(ctx));

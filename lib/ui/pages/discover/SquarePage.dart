@@ -10,7 +10,7 @@ import 'package:flutter_wan/util/Extension.dart';
 import 'package:flutter_wan/util/UiUtils.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
-import 'item/ItemArticle.dart';
+import '../item/ItemArticle.dart';
 
 class SquarePage extends StatefulWidget {
   @override
@@ -59,7 +59,7 @@ class SquareState extends BaseState<SquarePage> {
             child: ListView.builder(
               itemCount: mList.length,
               itemBuilder: (BuildContext context, int index) {
-                return ItemArticle(mList[index]);
+                return ItemArticle(mList[index], invalidate);
               },
             ),
           ),
@@ -98,18 +98,16 @@ class SquareState extends BaseState<SquarePage> {
 
   void _onRefresh() async {
     try {
-      _page = 0;
       var data =
-          await ApiService.ins().getHttpAsync("user_article/list/$_page/json");
-      mList.clear();
+          await ApiService.ins().getHttpAsync("user_article/list/0/json");
+      _page = 1;
       _pageCount = data["pageCount"] ?? -1;
-      _page++;
+      mList.clear();
       mList.addAll(data["datas"] ?? []);
       _state =
           mList.isEmpty ? PageStateView.showEmpty : PageStateView.showContent;
     } on ApiException catch (e) {
       e.msg?.toast();
-      _state = PageStateView.showError;
     } finally {
       _refreshController.refreshCompleted();
       if (mounted) {
@@ -126,6 +124,8 @@ class SquareState extends BaseState<SquarePage> {
       }
       var data =
           await ApiService.ins().getHttpAsync("user_article/list/$_page/json");
+      _pageCount = data["pageCount"] ?? -1;
+      _page++;
       mList.addAll(data["datas"] ?? []);
       _state =
           mList.isEmpty ? PageStateView.showEmpty : PageStateView.showContent;

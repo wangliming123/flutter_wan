@@ -239,6 +239,12 @@ class UiUtils {
       child: Row(
         children: widgets,
       ),
-    ).onTap(() => {onTap?.call()});
+    ).onTap(() {
+      if (onTap == null) {
+        "暂未开放".toast();
+      } else {
+        onTap.call();
+      }
+    });
   }
 }

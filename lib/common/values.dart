@@ -9,7 +9,7 @@ class SimpleTextStyle extends TextStyle {
     FontWeight fontWeight = FontWeight.normal,
     double fontHeightScale = 1.1
   }) :super(
-      fontSize: ScreenUtil().setSp(fontSize),
+      fontSize: fontSize,
       color: color,
       fontWeight: fontWeight,
       height: ScreenUtil().setHeight(fontHeightScale),

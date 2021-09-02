@@ -9,6 +9,9 @@ class RouteConst {
   static final knowledgeTree = "knowledgeTree";
   static final knowledgeInfo = "knowledgeInfo";
   static final project = "project";
+
+  static final collect = "collect";
+  static final userShare = "userShare";
 }
 
 class SpConst {

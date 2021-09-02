@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_wan/common/Const.dart';
+import 'package:flutter_wan/common/GlobalValues.dart';
 import 'package:flutter_wan/http/ApiService.dart';
 import 'package:flutter_wan/util/SpUtils.dart';
 
@@ -15,6 +16,7 @@ class SplashPage extends StatelessWidget {
       if (isLogin) {
         String username = await SpUtils.getInstance().getString(SpConst.username);
         String password = await SpUtils.getInstance().getString(SpConst.password);
+        GlobalValues.userId = await SpUtils.getInstance().getInt(SpConst.userId);
         ApiService.ins().postHttpAsync("user/login",
             querys: {"username": username, "password": password});
         Navigator.pushNamedAndRemoveUntil(

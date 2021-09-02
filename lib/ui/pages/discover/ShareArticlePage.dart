@@ -35,9 +35,10 @@ class ShareArticleState extends BaseState<ShareArticlePage> {
     }
     try {
       var body = {"title": _title, "link": _link};
-      await ApiService.ins().postHttpAsync("lg/user_article/add/json", querys: body);
+      await ApiService.ins()
+          .postHttpAsync("lg/user_article/add/json", querys: body);
       Navigator.pop(context);
-    } on ApiException catch(e) {
+    } on ApiException catch (e) {
       e.msg?.toast();
     }
   }
@@ -83,7 +84,7 @@ class ShareArticleState extends BaseState<ShareArticlePage> {
         ),
         toolbarHeight: 50.w,
         title:
-        UiUtils.text("分享", 18.sp, ColorRes.textColorPrimary, maxLines: 1),
+            UiUtils.text("分享", 18.sp, ColorRes.textColorPrimary, maxLines: 1),
         backgroundColor: Colors.white,
       ),
       body: Container(
@@ -178,7 +179,5 @@ class ShareArticleState extends BaseState<ShareArticlePage> {
   }
 
   @override
-  void initData() {
-    // TODO: implement initData
-  }
+  void initData() {}
 }

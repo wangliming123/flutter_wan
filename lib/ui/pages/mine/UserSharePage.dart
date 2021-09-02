@@ -6,52 +6,68 @@ import 'package:flutter_wan/http/ApiException.dart';
 import 'package:flutter_wan/http/ApiService.dart';
 import 'package:flutter_wan/ui/widget/PageStateView.dart';
 import 'package:flutter_wan/util/Extension.dart';
+import 'package:flutter_wan/util/UiUtils.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
-import 'ItemArticle.dart';
+import '../item/ItemArticle.dart';
 
-class ItemKnowledgeView extends StatefulWidget {
-  final int knowledgeId;
-
-  ItemKnowledgeView(this.knowledgeId);
-
+class UserSharePage extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
-    return _ItemKnowledgeState();
+    return _UserShareState();
   }
 }
 
-class _ItemKnowledgeState extends BaseState<ItemKnowledgeView> with AutomaticKeepAliveClientMixin {
+class _UserShareState extends BaseState<UserSharePage> {
   int _state = PageStateView.showLoading;
-  int _page = 0;
+  int _page = 1; //分享页码从1开始
   int _pageCount = -1;
-
+  int _pageSize = 10;
   List<dynamic> mList = [];
 
   RefreshController _refreshController = RefreshController();
 
   @override
-  Widget build(BuildContext context) {
-    super.build(context);
-    return getLayout();
-  }
-
-  @override
   Widget getLayout() {
-    return PageStateView(
-      state: _state,
-      onEmptyClick: initData,
-      onErrorClick: initData,
-      contentView: SmartRefresher(
-        controller: _refreshController,
-        enablePullUp: true,
-        onRefresh: _onRefresh,
-        onLoading: _loadMore,
-        child: ListView.builder(
-          itemCount: mList.length,
-          itemBuilder: (BuildContext context, int index) {
-            return ItemArticle(mList[index], invalidate);
+    return Scaffold(
+      appBar: AppBar(
+        leading: IconButton(
+          icon: Icon(
+            Icons.arrow_back,
+            color: ColorRes.textColorPrimary,
+          ),
+          onPressed: () {
+            Navigator.of(context).pop();
           },
+        ),
+        toolbarHeight: 50.w,
+        title:
+            UiUtils.text("我的收藏", 18.sp, ColorRes.textColorPrimary, maxLines: 1),
+        backgroundColor: Colors.white,
+      ),
+      body: Container(
+        color: ColorRes.defaultBg,
+        child: PageStateView(
+          state: _state,
+          onEmptyClick: initData,
+          onErrorClick: initData,
+          contentView: SmartRefresher(
+            controller: _refreshController,
+            enablePullUp: true,
+            onRefresh: _onRefresh,
+            onLoading: _loadMore,
+            child: ListView.builder(
+              itemCount: mList.length,
+              itemBuilder: (BuildContext context, int index) {
+                return ItemArticle(
+                  mList[index],
+                  invalidate,
+                  showDelete: true,
+                  onDeleteShare: () => _removeArticle(index),
+                );
+              },
+            ),
+          ),
         ),
       ),
     );
@@ -60,10 +76,15 @@ class _ItemKnowledgeState extends BaseState<ItemKnowledgeView> with AutomaticKee
   @override
   void initData() async {
     try {
+      setState(() {
+        _state = PageStateView.showLoading;
+      });
       var data = await ApiService.ins()
-          .getHttpAsync("article/list/$_page/json?cid=${widget.knowledgeId}");
+          .getHttpAsync("user/lg/private_articles/$_page/json");
+      data = data["shareArticles"];
       _pageCount = data["pageCount"] ?? -1;
       _page++;
+      _pageSize = data["size"] ?? 10;
       mList.addAll(data["datas"] ?? []);
       _state =
           mList.isEmpty ? PageStateView.showEmpty : PageStateView.showContent;
@@ -80,9 +101,11 @@ class _ItemKnowledgeState extends BaseState<ItemKnowledgeView> with AutomaticKee
   void _onRefresh() async {
     try {
       var data = await ApiService.ins()
-          .getHttpAsync("article/list/0/json?cid=${widget.knowledgeId}");
-      _page = 1;
+          .getHttpAsync("user/lg/private_articles/1/json");
+      data = data["shareArticles"];
+      _page = 2;
       _pageCount = data["pageCount"] ?? -1;
+      _pageSize = data["size"] ?? 10;
       mList.clear();
       mList.addAll(data["datas"] ?? []);
       _state =
@@ -104,10 +127,12 @@ class _ItemKnowledgeState extends BaseState<ItemKnowledgeView> with AutomaticKee
         return;
       }
       var data = await ApiService.ins()
-          .getHttpAsync("article/list/$_page/json?cid=${widget.knowledgeId}");
+          .getHttpAsync("user/lg/private_articles/$_page/json");
+      data = data["shareArticles"];
       _page++;
       _pageCount = data["pageCount"] ?? -1;
       mList.addAll(data["datas"] ?? []);
+      _pageSize = data["size"] ?? 10;
       _state =
           mList.isEmpty ? PageStateView.showEmpty : PageStateView.showContent;
     } on ApiException catch (e) {
@@ -120,6 +145,11 @@ class _ItemKnowledgeState extends BaseState<ItemKnowledgeView> with AutomaticKee
     }
   }
 
-  @override
-  bool get wantKeepAlive => true;
+  void _removeArticle(int index) {
+    mList.removeAt(index);
+    invalidate();
+    if (mList.length < _pageSize) {
+      _onRefresh();
+    }
+  }
 }

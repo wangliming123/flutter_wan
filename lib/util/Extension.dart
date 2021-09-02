@@ -39,7 +39,7 @@ extension WidgetEx on Widget {
     );
   }
 
-  Widget onTap(Function() onTap, {Function()? onLongPress}) {
+  Widget onTap(void Function() onTap, {void Function()? onLongPress}) {
     return GestureDetector(
       child: this,
       onTap: onTap,

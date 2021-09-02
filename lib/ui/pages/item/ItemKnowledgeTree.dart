@@ -39,6 +39,6 @@ class ItemKnowledgeTree extends StatelessWidget {
   }
 
   void _goKnowledgeInfo(BuildContext context) {
-    Navigator.pushNamed(context, RouteConst.knowledgeInfo, arguments: knowledge);
+    Navigator.pushNamed(context, RouteConst.knowledgeInfo, arguments: {"knowledge": knowledge});
   }
 }

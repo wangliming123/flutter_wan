@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_wan/base/BaseState.dart';
 import 'package:flutter_wan/common/Const.dart';
+import 'package:flutter_wan/common/GlobalValues.dart';
 import 'package:flutter_wan/http/ApiException.dart';
 import 'package:flutter_wan/http/ApiService.dart';
 import 'package:flutter_wan/ui/widget/Buttons.dart';
@@ -169,6 +170,7 @@ class _LoginState extends BaseState<LoginPage> {
       SpUtils.getInstance().putString(SpConst.username, _username);
       SpUtils.getInstance().putString(SpConst.password, _password);
       SpUtils.getInstance().putInt(SpConst.userId, res["id"]);
+      GlobalValues.userId = res["id"];
       Navigator.pushNamedAndRemoveUntil(
           context, RouteConst.mainPage, (route) => false);
     } on ApiException catch(e) {
@@ -190,6 +192,7 @@ class _LoginState extends BaseState<LoginPage> {
       SpUtils.getInstance().putString(SpConst.username, _username);
       SpUtils.getInstance().putString(SpConst.password, _password);
       SpUtils.getInstance().putInt(SpConst.userId, res["id"]);
+      GlobalValues.userId = res["id"];
       Navigator.pushNamedAndRemoveUntil(
           context, RouteConst.mainPage, (route) => false);
     } on ApiException catch(e) {

@@ -1,36 +1,34 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_wan/base/BaseState.dart';
 import 'package:flutter_wan/common/Const.dart';
 import 'package:flutter_wan/common/values.dart';
 import 'package:flutter_wan/http/ApiException.dart';
 import 'package:flutter_wan/http/ApiService.dart';
 import 'package:flutter_wan/ui/pages/WebViewPage.dart';
+import 'package:flutter_wan/ui/pages/discover/KnowledgeInfoPage.dart';
 import 'package:flutter_wan/util/Extension.dart';
 import 'package:flutter_wan/util/SpUtils.dart';
 import 'package:flutter_wan/util/UiUtils.dart';
 
-class ItemArticle extends StatefulWidget {
+class ItemArticle extends StatelessWidget {
   final dynamic article;
+  final void Function() onRefresh;
+  final void Function()? onUnCollect;
+  final void Function()? onDeleteShare;
+  final bool showDelete;
+  final String idName;
 
-  ItemArticle(this.article);
-
-  @override
-  State<StatefulWidget> createState() {
-    return ItemArticleState(article);
-  }
-}
-
-class ItemArticleState extends BaseState<ItemArticle> {
-  dynamic article;
-
-  ItemArticleState(this.article);
-
-  @override
-  void initData() {}
+  ItemArticle(
+    this.article,
+    this.onRefresh, {
+    this.onUnCollect,
+    this.onDeleteShare,
+    this.showDelete = false,
+    this.idName = "id",
+  });
 
   @override
-  Widget getLayout() {
+  Widget build(BuildContext context) {
     var chapter = "";
     if (article["superChapterName"] != null &&
         article["superChapterName"].toString().isNotEmpty) {
@@ -99,29 +97,40 @@ class ItemArticleState extends BaseState<ItemArticle> {
                 ).expanded()
               ],
             ).padding(top: 5.w),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                UiUtils.text(chapter, 12.sp, ColorRes.colorPrimary),
-                Spacer(),
-                Icon(
-                  IconData(article["collect"] ? 58959 : 58960,
-                      fontFamily: "iconfont1"),
-                  color: Colors.red,
-                )
-                    .padding(top: 5.w, bottom: 5.w, right: 20.w)
-                    .onTap(() => _collectArticle())
-              ],
-            )
+            Container(
+              height: 50.w,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  UiUtils.text(chapter, 12.sp, ColorRes.colorPrimary)
+                      .padding(left: 5.w, top: 10.w, bottom: 10.w, right: 5.w)
+                      .onTap(() => _goChapterShare(context)),
+                  Spacer(),
+                  Icon(
+                    IconData(article["collect"] ? 58959 : 58960,
+                        fontFamily: "iconfont1"),
+                    color: Colors.red,
+                  ).paddingAll(8.w).onTap(() => _collectArticle(context)),
+                  Icon(
+                    IconData(58914, fontFamily: "iconfont1"),
+                    color: Colors.grey,
+                  )
+                      .onTap(() => _confirmDeleteShare(context))
+                      .padding(left: 20.w)
+                      .visible(showDelete),
+                ],
+              ),
+            ),
           ],
         ).padding(
           left: 10.w,
         ),
       ),
-    ).onTap(() => _goArticleInfo());
+    ).onTap(() => _goArticleInfo(context));
   }
 
-  _collectArticle() async {
+  _collectArticle(BuildContext context) async {
     bool isLogin =
         await SpUtils.getInstance().getBool(SpConst.isLogin) ?? false;
     if (!isLogin) {
@@ -130,24 +139,90 @@ class ItemArticleState extends BaseState<ItemArticle> {
       return;
     }
     try {
-      if (article["collect"]) {
-        await ApiService.ins()
-            .postHttpAsync("lg/uncollect_originId/${article["id"]}/json");
+      if (article["collect"] == true) {
         article["collect"] = false;
-      } else {
+        onRefresh();
         await ApiService.ins()
-            .postHttpAsync("lg/collect/${article["id"]}/json");
+            .postHttpAsync("lg/uncollect_originId/${article[idName]}/json");
+        onUnCollect?.call();
+      } else {
         article["collect"] = true;
+        onRefresh();
+        await ApiService.ins()
+            .postHttpAsync("lg/collect/${article[idName]}/json");
       }
     } on ApiException catch (e) {
       e.msg?.toast();
-    } finally {
-      invalidate();
+      article["collect"] = !article["collect"];
+      onRefresh();
     }
   }
 
-  _goArticleInfo() {
+  _goArticleInfo(BuildContext context) {
     Navigator.pushNamed(context, RouteConst.webView,
         arguments: WebUrl(article["link"], article["title"]));
+  }
+
+  void _confirmDeleteShare(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: UiUtils.text("确认删除分享？", 16.sp, ColorRes.textColorPrimary),
+          actions: [
+            TextButton(
+              child: UiUtils.text("取消", 14.sp, ColorRes.colorPrimary),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+            ),
+            TextButton(
+              child: UiUtils.text("确定", 14.sp, ColorRes.colorPrimary),
+              onPressed: () {
+                Navigator.pop(context);
+                _deleteShare(context);
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  _deleteShare(BuildContext context) async {
+    try {
+      await ApiService.ins()
+          .postHttpAsync("lg/user_article/delete/${article["id"]}/json");
+      onDeleteShare?.call();
+    } on ApiException catch (e) {
+      e.msg?.toast();
+    }
+  }
+
+  void _goChapterShare(BuildContext context) async {
+    int superId = article["realSuperChapterId"];
+    int id = article["chapterId"];
+    var knowledge;
+    try {
+      var data = await ApiService.ins().getHttpAsync("tree/json");
+      if (data is List) {
+        for (var element in data) {
+          if (element["id"] == superId) {
+            knowledge = element;
+            break;
+          }
+        }
+        data.forEach((element) {
+
+        });
+      }
+    } on ApiException catch(e) {
+      e.msg?.toast();
+      return;
+    }
+    Navigator.pushNamed(context, RouteConst.knowledgeInfo, arguments: {
+      "knowledge": knowledge,
+      "id": id,
+    });
   }
 }

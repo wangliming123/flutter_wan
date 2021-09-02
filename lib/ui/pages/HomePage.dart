@@ -48,7 +48,7 @@ class _HomeState extends BaseState<HomePage> {
             if (mList[index]["isBanner"] == true)
               return getBannerView();
             else
-              return ItemArticle(mList[index]);
+              return ItemArticle(mList[index], invalidate);
           },
         ),
       ),
@@ -108,11 +108,10 @@ class _HomeState extends BaseState<HomePage> {
           element["isTop"] = true;
         });
       }
-      _page = 0;
       var data =
-          await ApiService.ins().getHttpAsync("article/list/$_page/json");
+          await ApiService.ins().getHttpAsync("article/list/0/json");
       _pageCount = data["pageCount"] ?? -1;
-      _page++;
+      _page = 1;
       mList.clear();
       if (bannerList.isNotEmpty) {
         dynamic banner = {"isBanner": true};
@@ -124,7 +123,6 @@ class _HomeState extends BaseState<HomePage> {
           mList.isEmpty ? PageStateView.showEmpty : PageStateView.showContent;
     } on ApiException catch (e) {
       e.msg?.toast();
-      _state = PageStateView.showError;
     } finally {
       _refreshController.refreshCompleted();
       if (mounted) {
@@ -141,6 +139,8 @@ class _HomeState extends BaseState<HomePage> {
       }
       var data =
           await ApiService.ins().getHttpAsync("article/list/$_page/json");
+      _pageCount = data["pageCount"] ?? -1;
+      _page++;
       mList.addAll(data["datas"] ?? []);
       _state =
           mList.isEmpty ? PageStateView.showEmpty : PageStateView.showContent;
