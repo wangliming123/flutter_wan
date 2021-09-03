@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_wan/base/BaseState.dart';
 import 'package:flutter_wan/common/values.dart';
-import 'package:flutter_wan/http/ApiException.dart';
-import 'package:flutter_wan/http/ApiService.dart';
 import 'package:flutter_wan/ui/pages/item/ItemKnowledgeView.dart';
 import 'package:flutter_wan/util/Extension.dart';
 import 'package:flutter_wan/util/UiUtils.dart';

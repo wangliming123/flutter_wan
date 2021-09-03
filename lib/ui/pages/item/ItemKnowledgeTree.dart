@@ -21,24 +21,38 @@ class ItemKnowledgeTree extends StatelessWidget {
         children: [
           UiUtils.text(
             knowledge["name"],
-            16.sp,
+            18.sp,
             ColorRes.textColorPrimary,
             maxLines: 1,
           ),
-          UiUtils.text(
-            (knowledge["children"] as List<dynamic>)
-                .map((e) => e["name"])
-                .join("    "),
-            15.sp,
-            ColorRes.textColorSecondary,
-            fontHeight: 1.5,
+          Wrap(
+            spacing: 10.w,
+            runSpacing: 5.w,
+            children: _getChildren(context),
           ).padding(top: 5.w),
         ],
       ).paddingAll(8.w),
     ).onTap(() => _goKnowledgeInfo(context));
   }
 
-  void _goKnowledgeInfo(BuildContext context) {
-    Navigator.pushNamed(context, RouteConst.knowledgeInfo, arguments: {"knowledge": knowledge});
+  void _goKnowledgeInfo(BuildContext context, {int? id}) {
+    Navigator.pushNamed(
+      context,
+      RouteConst.knowledgeInfo,
+      arguments: {
+        "knowledge": knowledge,
+        "id": id,
+      },
+    );
+  }
+
+  List<Widget> _getChildren(BuildContext context) {
+    var children = knowledge["children"] as List<dynamic>;
+    return children.map((e) {
+      return UiUtils.text(e["name"], 16.sp, ColorRes.textColorSecondary).paddingAll(5.w)
+          .onTap(() {
+        _goKnowledgeInfo(context, id: e["id"]);
+      });
+    }).toList();
   }
 }

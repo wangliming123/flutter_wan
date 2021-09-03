@@ -5,7 +5,6 @@ import 'package:flutter_wan/common/values.dart';
 import 'package:flutter_wan/http/ApiException.dart';
 import 'package:flutter_wan/http/ApiService.dart';
 import 'package:flutter_wan/ui/pages/WebViewPage.dart';
-import 'package:flutter_wan/ui/pages/discover/KnowledgeInfoPage.dart';
 import 'package:flutter_wan/util/Extension.dart';
 import 'package:flutter_wan/util/SpUtils.dart';
 import 'package:flutter_wan/util/UiUtils.dart';
@@ -212,9 +211,6 @@ class ItemArticle extends StatelessWidget {
             break;
           }
         }
-        data.forEach((element) {
-
-        });
       }
     } on ApiException catch(e) {
       e.msg?.toast();
