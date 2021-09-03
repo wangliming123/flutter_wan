@@ -10,7 +10,7 @@ import 'package:flutter_wan/ui/MainPage.dart';
 import 'package:flutter_wan/ui/SplashPage.dart';
 import 'package:flutter_wan/ui/pages/discover/KnowledgeInfoPage.dart';
 import 'package:flutter_wan/ui/pages/discover/KnowledgeTreePage.dart';
-import 'package:flutter_wan/ui/pages/discover/ProjectPage.dart';
+import 'package:flutter_wan/ui/pages/discover/NavigationPage.dart';
 import 'package:flutter_wan/ui/pages/discover/ShareArticlePage.dart';
 import 'package:flutter_wan/ui/pages/discover/SquarePage.dart';
 import 'package:flutter_wan/ui/pages/WebViewPage.dart';
@@ -77,7 +77,7 @@ class MyApp extends StatelessWidget {
         dynamic map = settings.arguments;
         return KnowledgeInfoPage(knowledge: map["knowledge"], id: map["id"],);
       },
-      RouteConst.project: (_) => ProjectPage(),
+      RouteConst.navigation: (_) => NavigationPage(),
 
       RouteConst.collect: (_) => CollectPage(),
       RouteConst.userShare: (_) => UserSharePage(),

@@ -25,7 +25,6 @@ class MinePage extends StatelessWidget {
             leftIcon:
                 Icon(IconData(58881, fontFamily: "iconfont1"), size: 25.w),
             rightIcon: Icon(Icons.keyboard_arrow_right),
-            onTap: () {},
           ).padding(top: 5.w, bottom: 5.w),
           UiUtils.lineTabButton(
             "我的收藏",
@@ -59,7 +58,6 @@ class MinePage extends StatelessWidget {
             leftIcon:
                 Icon(IconData(59117, fontFamily: "iconfont1"), size: 25.w),
             rightIcon: Icon(Icons.keyboard_arrow_right),
-            onTap: () {},
           ).padding(top: 5.w, bottom: 5.w),
           UiUtils.lineTabButton(
             "关于",

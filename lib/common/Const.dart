@@ -8,7 +8,7 @@ class RouteConst {
   static final shareArticle = "shareArticle";
   static final knowledgeTree = "knowledgeTree";
   static final knowledgeInfo = "knowledgeInfo";
-  static final project = "project";
+  static final navigation = "navigation";
 
   static final collect = "collect";
   static final userShare = "userShare";

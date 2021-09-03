@@ -41,7 +41,7 @@ class DiscoverPage extends StatelessWidget {
           height: 50.w,
           leftIcon: Icon(Icons.navigation_outlined, size: 25.w),
           rightIcon: Icon(Icons.keyboard_arrow_right),
-          onTap: () {},
+          onTap: () {Navigator.pushNamed(context, RouteConst.navigation);},
         ).padding(top: 5.w, bottom: 5.w),
         UiUtils.lineTabButton(
           "开源项目",
@@ -66,7 +66,7 @@ class DiscoverPage extends StatelessWidget {
           16.sp,
           textColor: ColorRes.textColorPrimary,
           height: 50.w,
-          leftIcon: Icon(IconData(58962, fontFamily: "iconfont1"), size: 25.w),
+          leftIcon: Icon(IconData(58892, fontFamily: "iconfont1"), size: 25.w),
           rightIcon: Icon(Icons.keyboard_arrow_right),
           onTap: () => _goKnowledgeInfo(context, 422),
         ).padding(top: 5.w, bottom: 5.w),

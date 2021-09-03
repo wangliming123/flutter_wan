@@ -66,7 +66,7 @@ class SquareState extends BaseState<SquarePage> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-          child: Icon(Icons.add),
+          child: Icon(Icons.add, size: 32.w,),
           onPressed: () {
             Navigator.pushNamed(context, RouteConst.shareArticle);
           }),
