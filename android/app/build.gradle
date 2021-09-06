@@ -41,9 +41,19 @@ android {
         versionName flutterVersionName
     }
 
+    signingConfigs {
+        signRelease {
+            keyAlias 'wlmdev'
+            keyPassword 'wlm123'
+            storeFile file('E:/workspace/WanAndroid2/wlmSign.jks')
+            storePassword 'wlm123'
+        }
+    }
+
     buildTypes {
         release {
             // TODO: Add your own signing config for the release build.
+            signingConfig signingConfigs.signRelease
             // Signing with the debug keys for now, so `flutter run --release` works.
             signingConfig signingConfigs.debug
         }

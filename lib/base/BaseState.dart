@@ -6,8 +6,8 @@ import 'package:flutter_wan/util/DialogUtils.dart';
 abstract class BaseState<T extends StatefulWidget> extends State<T> {
   @override
   void initState() {
-    super.initState();
     initData();
+    super.initState();
   }
 
   @override

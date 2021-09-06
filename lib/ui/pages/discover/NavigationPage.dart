@@ -8,6 +8,7 @@ import 'package:flutter_wan/http/ApiService.dart';
 import 'package:flutter_wan/ui/widget/PageStateView.dart';
 import 'package:flutter_wan/util/Extension.dart';
 import 'package:flutter_wan/util/UiUtils.dart';
+import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
 import '../WebViewPage.dart';
 
@@ -22,6 +23,14 @@ class _NavigationState extends BaseState<NavigationPage> {
   int _state = PageStateView.showLoading;
 
   List<dynamic> mList = [];
+
+  final ItemScrollController _itemsScrollController = ItemScrollController();
+  final ItemScrollController _navScrollController = ItemScrollController();
+  ItemPositionsListener _navListener = ItemPositionsListener.create();
+  ItemPositionsListener _itemsListener = ItemPositionsListener.create();
+
+  int _lastFirstIndex = 0;
+  bool moveByTap = false;
 
   @override
   Widget getLayout() {
@@ -45,18 +54,72 @@ class _NavigationState extends BaseState<NavigationPage> {
         state: _state,
         onEmptyClick: initData,
         onErrorClick: initData,
-        contentView: ListView.builder(
-          itemCount: mList.length,
-          itemBuilder: (context, index) {
-            return _getNavArticleItem(context, index);
-          },
-        ).paddingAll(10.w),
+        contentView: Row(
+          children: [
+            ScrollablePositionedList.builder(
+              addAutomaticKeepAlives: true,
+              minCacheExtent: 600.w,
+              itemCount: mList.length,
+              itemBuilder: (context, index) {
+                return _getNav(index);
+              },
+              itemScrollController: _navScrollController,
+              itemPositionsListener: _navListener,
+            ).expanded(flex: 2),
+            Container(
+              width: 1.w,
+              color: ColorRes.e2e2e2,
+            ).paddingAll(5.w),
+            ScrollablePositionedList.builder(
+              addAutomaticKeepAlives: true,
+              minCacheExtent: 600.w,
+              itemCount: mList.length,
+              itemBuilder: (context, index) {
+                return _getItems(context, index);
+              },
+              itemScrollController: _itemsScrollController,
+              itemPositionsListener: _itemsListener,
+            ).expanded(flex: 5),
+          ],
+        ),
+        // ListView.builder(
+        //   itemCount: mList.length,
+        //   itemBuilder: (context, index) {
+        //     return _getNavArticleItem(context, index);
+        //   },
+        // ).paddingAll(10.w),
       ),
     );
   }
 
+  void Function()? moveListener;
+
   @override
   void initData() async {
+    moveListener = () {
+      var positions = _itemsListener.itemPositions.value;
+      if (positions.isNotEmpty) {
+        int firstIndex = positions
+            .where((element) => element.itemTrailingEdge > 0)
+            .reduce((min, position) =>
+                position.itemTrailingEdge < min.itemTrailingEdge
+                    ? position
+                    : min)
+            .index;
+        print('firstIndex= $firstIndex');
+        if (_lastFirstIndex != firstIndex && mounted) {
+          _lastFirstIndex = firstIndex;
+          invalidate();
+
+          _navScrollController.scrollTo(
+              index: firstIndex,
+              duration: Duration(milliseconds: 500),
+              curve: Curves.linear);
+        }
+      }
+    };
+    _itemsListener.itemPositions.addListener(moveListener!);
+
     try {
       setState(() {
         _state = PageStateView.showLoading;
@@ -75,19 +138,51 @@ class _NavigationState extends BaseState<NavigationPage> {
     }
   }
 
-  Widget _getNavItem(int index) {
+  Widget _getNav(int index) {
     return Container(
       alignment: Alignment.center,
       height: 50.w,
       child: UiUtils.text(
         mList[index]["name"],
         16.sp,
-        ColorRes.textColorSecondary,
+        _lastFirstIndex == index
+            ? ColorRes.colorPrimary
+            : ColorRes.textColorSecondary,
+        textAlign: TextAlign.center,
       ),
-    );
+      decoration: BoxDecoration(color: ColorRes.defaultBg),
+    ).onTap(() {
+      int dif = (_lastFirstIndex - index).abs();
+      int duration = 0;
+      if (dif < 1) {
+        return;
+      } else if (dif <= 2) {
+        duration = 500;
+      } else if (dif <= 5) {
+        duration = 1000;
+      } else if (dif <= 10) {
+        duration = 2000;
+      } else {
+        duration = 4000;
+      }
+      _lastFirstIndex = index;
+      invalidate();
+      _itemsListener.itemPositions.removeListener(moveListener!);
+      _itemsScrollController
+          .scrollTo(
+              index: index,
+              duration: Duration(milliseconds: 500),
+              curve: Curves.linear)
+          .then((value) {
+        Future.delayed(Duration(milliseconds: duration), () {
+          _itemsScrollController.isAttached;
+          _itemsListener.itemPositions.addListener(moveListener!);
+        });
+      });
+    });
   }
 
-  Widget _getNavArticleItem(BuildContext context, int index) {
+  Widget _getItems(BuildContext context, int index) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -121,27 +216,5 @@ class _NavigationState extends BaseState<NavigationPage> {
     print('${article["link"]},  ${article["title"]}');
     Navigator.pushNamed(context, RouteConst.webView,
         arguments: WebUrl(article["link"], article["title"]));
-  }
-}
-
-class CustomScrollDelegate extends SliverChildBuilderDelegate {
-  final Function(int firstIndex, int lastIndex, double leadingScrollOffset,
-      double trailingScrollOffset)? scrollCallback;
-
-  CustomScrollDelegate(
-      {required NullableIndexedWidgetBuilder builder,
-      int? childCount,
-      this.scrollCallback})
-      : super(builder, childCount: childCount);
-
-  @override
-  double? estimateMaxScrollOffset(int firstIndex, int lastIndex,
-      double leadingScrollOffset, double trailingScrollOffset) {
-    print(
-        'firstIndex= $firstIndex,  lastIndex= $lastIndex},  leadingScrollOffset= $leadingScrollOffset},  trailingScrollOffset= $trailingScrollOffset}');
-    scrollCallback?.call(
-        firstIndex, lastIndex, leadingScrollOffset, trailingScrollOffset);
-    return super.estimateMaxScrollOffset(
-        firstIndex, lastIndex, leadingScrollOffset, trailingScrollOffset);
   }
 }
