@@ -5,7 +5,6 @@ import 'package:flutter_wan/common/Const.dart';
 import 'package:flutter_wan/http/ApiException.dart';
 import 'package:flutter_wan/http/AppInterceptor.dart';
 import 'package:flutter_wan/util/Extension.dart';
-import 'package:flutter_wan/util/SpUtils.dart';
 
 class ApiService {
   static final baseUrl = "https://www.wanandroid.com/";

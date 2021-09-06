@@ -2,7 +2,6 @@ import 'package:date_format/date_format.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_wan/base/BaseState.dart';
-import 'package:flutter_wan/common/Const.dart';
 import 'package:flutter_wan/common/values.dart';
 import 'package:flutter_wan/http/ApiException.dart';
 import 'package:flutter_wan/http/ApiService.dart';

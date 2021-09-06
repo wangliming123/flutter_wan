@@ -50,15 +50,15 @@ class MainState extends BaseState<MainPage> {
         iconSize: 20.w,
         items: [
           BottomNavigationBarItem(
-            icon: Icon(IconData(58890, fontFamily: "iconfont1"),),
+            icon: Icon(const IconData(58890, fontFamily: "iconfont1"),),
             label: "首页",
           ),
           BottomNavigationBarItem(
-            icon: Icon(IconData(59186, fontFamily: "iconfont1"),),
+            icon: Icon(const IconData(59186, fontFamily: "iconfont1"),),
             label: "发现",
           ),
           BottomNavigationBarItem(
-            icon: Icon(IconData(58896, fontFamily: "iconfont1"),),
+            icon: Icon(const IconData(58896, fontFamily: "iconfont1"),),
             label: "我的",
           ),
         ],

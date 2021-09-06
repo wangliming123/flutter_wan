@@ -107,12 +107,17 @@ class ItemArticle extends StatelessWidget {
                       .onTap(() => _goChapterShare(context)),
                   Spacer(),
                   Icon(
-                    IconData(article["collect"] ? 58959 : 58960,
+                    const IconData(58959,
                         fontFamily: "iconfont1"),
                     color: Colors.red,
-                  ).paddingAll(8.w).onTap(() => _collectArticle(context)),
+                  ).paddingAll(8.w).onTap(() => _collectArticle(context)).visible(article["collect"] == true),
                   Icon(
-                    IconData(58914, fontFamily: "iconfont1"),
+                    const IconData(58960,
+                        fontFamily: "iconfont1"),
+                    color: Colors.red,
+                  ).paddingAll(8.w).onTap(() => _collectArticle(context)).visible(article["collect"] != true),
+                  Icon(
+                    const IconData(58914, fontFamily: "iconfont1"),
                     color: Colors.grey,
                   )
                       .onTap(() => _confirmDeleteShare(context))

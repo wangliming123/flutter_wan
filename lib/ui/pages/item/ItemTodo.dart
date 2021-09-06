@@ -1,4 +1,3 @@
-import 'package:date_format/date_format.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_wan/common/values.dart';
@@ -41,13 +40,17 @@ class ItemTodo extends StatelessWidget {
           ).padding(left: 10.w, top: 8.w, bottom: 8.w).expanded(),
           Spacer(),
           Icon(
-            IconData(todo["status"] == TODO_STATUS_FINISHED ? 58925 : 58964, fontFamily: "iconfont1"),
+            const IconData(58925, fontFamily: "iconfont1"),
             color: Colors.grey,
-          ).paddingAll(8.w).onTap(() => _handleTodo(context)),
+          ).paddingAll(8.w).onTap(() => _handleTodo(context)).visible(todo["status"] == TODO_STATUS_FINISHED),
           Icon(
-            IconData(58914, fontFamily: "iconfont1"),
+            const IconData(58964, fontFamily: "iconfont1"),
             color: Colors.grey,
-          ).paddingAll(8.w).onTap(() => _deleteTodo(context))
+          ).paddingAll(8.w).onTap(() => _handleTodo(context)).visible(todo["status"] != TODO_STATUS_FINISHED),
+          Icon(
+            const IconData(58914, fontFamily: "iconfont1"),
+            color: Colors.grey,
+          ).paddingAll(8.w).onTap(() => _deleteTodo(context)),
         ],
       ),
     );
