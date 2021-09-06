@@ -45,7 +45,7 @@ android {
         signRelease {
             keyAlias 'wlmdev'
             keyPassword 'wlm123'
-            storeFile file('E:/workspace/WanAndroid2/wlmSign.jks')
+            storeFile file('wlmSign.jks')
             storePassword 'wlm123'
         }
     }
