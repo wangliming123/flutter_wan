@@ -30,6 +30,10 @@ class SpUtils {
     return prefs?.getString(key);
   }
 
+  String? getStringAlways(String key) {
+    return prefs?.getString(key);
+  }
+
   removeData(String key) async {
     await initPrefs();
     return prefs?.remove(key);
@@ -45,6 +49,10 @@ class SpUtils {
     return prefs?.getInt(key);
   }
 
+  int? getIntAlways(String key) {
+    return prefs?.getInt(key);
+  }
+
   putDouble(String key, double value) async {
     await initPrefs();
     prefs?.setDouble(key, value);
@@ -55,6 +63,10 @@ class SpUtils {
     return prefs?.getDouble(key);
   }
 
+  double? getDoubleAlways(String key) {
+    return prefs?.getDouble(key);
+  }
+
   putBool(String key, bool value) async {
     await initPrefs();
     prefs?.setBool(key, value);
@@ -62,6 +74,10 @@ class SpUtils {
 
   getBool(String key) async {
     await initPrefs();
+    return prefs?.getBool(key);
+  }
+
+  bool? getBoolAlways(String key) {
     return prefs?.getBool(key);
   }
 

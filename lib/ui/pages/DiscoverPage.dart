@@ -77,7 +77,7 @@ class DiscoverPage extends StatelessWidget {
   _goKnowledgeInfo(BuildContext context, int id) async {
     var knowledge;
     try {
-      var data = await ApiService.ins().getHttpAsync("tree/json");
+      var data = await ApiService.ins().getHttpAsync(context, "tree/json");
       if (data is List) {
         for (var element in data) {
           if (element["id"] == id) {

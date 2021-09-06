@@ -12,6 +12,7 @@ class RouteConst {
 
   static final collect = "collect";
   static final userShare = "userShare";
+  static final todoList = "todoList";
 }
 
 class SpConst {

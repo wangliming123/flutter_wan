@@ -80,7 +80,7 @@ class SquareState extends BaseState<SquarePage> {
         _state = PageStateView.showLoading;
       });
       var data =
-          await ApiService.ins().getHttpAsync("user_article/list/$_page/json");
+          await ApiService.ins().getHttpAsync(context, "user_article/list/$_page/json");
       _pageCount = data["pageCount"] ?? -1;
       _page++;
       mList.addAll(data["datas"] ?? []);
@@ -99,7 +99,7 @@ class SquareState extends BaseState<SquarePage> {
   void _onRefresh() async {
     try {
       var data =
-          await ApiService.ins().getHttpAsync("user_article/list/0/json");
+          await ApiService.ins().getHttpAsync(context, "user_article/list/0/json");
       _page = 1;
       _pageCount = data["pageCount"] ?? -1;
       mList.clear();
@@ -123,7 +123,7 @@ class SquareState extends BaseState<SquarePage> {
         return;
       }
       var data =
-          await ApiService.ins().getHttpAsync("user_article/list/$_page/json");
+          await ApiService.ins().getHttpAsync(context, "user_article/list/$_page/json");
       _pageCount = data["pageCount"] ?? -1;
       _page++;
       mList.addAll(data["datas"] ?? []);

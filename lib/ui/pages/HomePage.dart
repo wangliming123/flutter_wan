@@ -67,16 +67,16 @@ class _HomeState extends BaseState<HomePage> {
       setState(() {
         _state = PageStateView.showLoading;
       });
-      var banners = await ApiService.ins().getHttpAsync("banner/json");
+      var banners = await ApiService.ins().getHttpAsync(context, "banner/json");
       bannerList.addAll(banners ?? []);
-      var top = await ApiService.ins().getHttpAsync("article/top/json");
+      var top = await ApiService.ins().getHttpAsync(context, "article/top/json");
       if (top is List) {
         top.forEach((element) {
           element["isTop"] = true;
         });
       }
       var data =
-          await ApiService.ins().getHttpAsync("article/list/$_page/json");
+          await ApiService.ins().getHttpAsync(context, "article/list/$_page/json");
       _pageCount = data["pageCount"] ?? -1;
       _page++;
       if (bannerList.isNotEmpty) {
@@ -99,17 +99,17 @@ class _HomeState extends BaseState<HomePage> {
 
   void _onRefresh() async {
     try {
-      var banners = await ApiService.ins().getHttpAsync("banner/json");
+      var banners = await ApiService.ins().getHttpAsync(context, "banner/json");
       bannerList.clear();
       bannerList.addAll(banners ?? []);
-      var top = await ApiService.ins().getHttpAsync("article/top/json");
+      var top = await ApiService.ins().getHttpAsync(context, "article/top/json");
       if (top is List) {
         top.forEach((element) {
           element["isTop"] = true;
         });
       }
       var data =
-          await ApiService.ins().getHttpAsync("article/list/0/json");
+          await ApiService.ins().getHttpAsync(context, "article/list/0/json");
       _pageCount = data["pageCount"] ?? -1;
       _page = 1;
       mList.clear();
@@ -138,7 +138,7 @@ class _HomeState extends BaseState<HomePage> {
         return;
       }
       var data =
-          await ApiService.ins().getHttpAsync("article/list/$_page/json");
+          await ApiService.ins().getHttpAsync(context, "article/list/$_page/json");
       _pageCount = data["pageCount"] ?? -1;
       _page++;
       mList.addAll(data["datas"] ?? []);

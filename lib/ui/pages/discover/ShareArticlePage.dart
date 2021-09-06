@@ -36,7 +36,7 @@ class ShareArticleState extends BaseState<ShareArticlePage> {
     try {
       var body = {"title": _title, "link": _link};
       await ApiService.ins()
-          .postHttpAsync("lg/user_article/add/json", querys: body);
+          .postHttpAsync(context, "lg/user_article/add/json", querys: body);
       Navigator.pop(context);
     } on ApiException catch (e) {
       e.msg?.toast();

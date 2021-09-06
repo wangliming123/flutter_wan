@@ -17,7 +17,7 @@ class SplashPage extends StatelessWidget {
         String username = await SpUtils.getInstance().getString(SpConst.username);
         String password = await SpUtils.getInstance().getString(SpConst.password);
         GlobalValues.userId = await SpUtils.getInstance().getInt(SpConst.userId);
-        ApiService.ins().postHttpAsync("user/login",
+        ApiService.ins().postHttpAsync(context, "user/login",
             querys: {"username": username, "password": password});
         Navigator.pushNamedAndRemoveUntil(
             context, RouteConst.mainPage, (route) => false);

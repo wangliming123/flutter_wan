@@ -163,7 +163,7 @@ class _LoginState extends BaseState<LoginPage> {
   login() async {
     showCoverLoading();
     try {
-      var res = await ApiService.ins().postHttpAsync("user/login",
+      var res = await ApiService.ins().postHttpAsync(context, "user/login",
           querys: {"username": _username, "password": _password});
       hideCoverLoading();
       SpUtils.getInstance().putBool(SpConst.isLogin, true);
@@ -182,7 +182,7 @@ class _LoginState extends BaseState<LoginPage> {
 
   void register() async {
     try {
-      var res = await ApiService.ins().postHttpAsync("user/register", querys: {
+      var res = await ApiService.ins().postHttpAsync(context, "user/register", querys: {
         "username": _username,
         "password": _password,
         "repassword": _password

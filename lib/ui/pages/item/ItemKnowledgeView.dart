@@ -60,7 +60,7 @@ class _ItemKnowledgeState extends BaseState<ItemKnowledgeView> with AutomaticKee
   void initData() async {
     try {
       var data = await ApiService.ins()
-          .getHttpAsync("article/list/$_page/json?cid=${widget.knowledgeId}");
+          .getHttpAsync(context, "article/list/$_page/json?cid=${widget.knowledgeId}");
       _pageCount = data["pageCount"] ?? -1;
       _page++;
       mList.addAll(data["datas"] ?? []);
@@ -79,7 +79,7 @@ class _ItemKnowledgeState extends BaseState<ItemKnowledgeView> with AutomaticKee
   void _onRefresh() async {
     try {
       var data = await ApiService.ins()
-          .getHttpAsync("article/list/0/json?cid=${widget.knowledgeId}");
+          .getHttpAsync(context, "article/list/0/json?cid=${widget.knowledgeId}");
       _page = 1;
       _pageCount = data["pageCount"] ?? -1;
       mList.clear();
@@ -103,7 +103,7 @@ class _ItemKnowledgeState extends BaseState<ItemKnowledgeView> with AutomaticKee
         return;
       }
       var data = await ApiService.ins()
-          .getHttpAsync("article/list/$_page/json?cid=${widget.knowledgeId}");
+          .getHttpAsync(context, "article/list/$_page/json?cid=${widget.knowledgeId}");
       _page++;
       _pageCount = data["pageCount"] ?? -1;
       mList.addAll(data["datas"] ?? []);

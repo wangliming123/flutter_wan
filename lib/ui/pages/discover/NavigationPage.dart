@@ -124,7 +124,7 @@ class _NavigationState extends BaseState<NavigationPage> {
       setState(() {
         _state = PageStateView.showLoading;
       });
-      var data = await ApiService.ins().getHttpAsync("navi/json");
+      var data = await ApiService.ins().getHttpAsync(context, "navi/json");
       mList.addAll(data ?? []);
       _state =
           mList.isEmpty ? PageStateView.showEmpty : PageStateView.showContent;

@@ -123,8 +123,10 @@ class UiUtils {
     FocusNode? focusNode,
     Function? onText,
     bool obscureText = false,
+    bool enable = true,
   }) {
     return TextField(
+      enabled: enable,
       obscureText: obscureText,
       focusNode: focusNode,
       inputFormatters: inputFormatters,

@@ -15,6 +15,7 @@ import 'package:flutter_wan/ui/pages/discover/ShareArticlePage.dart';
 import 'package:flutter_wan/ui/pages/discover/SquarePage.dart';
 import 'package:flutter_wan/ui/pages/WebViewPage.dart';
 import 'package:flutter_wan/ui/pages/mine/CollectPage.dart';
+import 'package:flutter_wan/ui/pages/mine/TodoListPage.dart';
 import 'package:flutter_wan/ui/pages/mine/UserSharePage.dart';
 import 'package:flutter_wan/util/CommonUtils.dart';
 
@@ -81,6 +82,7 @@ class MyApp extends StatelessWidget {
 
       RouteConst.collect: (_) => CollectPage(),
       RouteConst.userShare: (_) => UserSharePage(),
+      RouteConst.todoList: (_) => TodoListPage(),
     };
     WidgetBuilder builder = routes[settings.name] ?? (_) => SplashPage();
     return MaterialPageRoute(builder: (ctx) => builder(ctx));

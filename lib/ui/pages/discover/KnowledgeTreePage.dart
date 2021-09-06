@@ -59,7 +59,7 @@ class KnowledgeTreeState extends BaseState<KnowledgeTreePage> {
       setState(() {
         _state = PageStateView.showLoading;
       });
-      var data = await ApiService.ins().getHttpAsync("tree/json");
+      var data = await ApiService.ins().getHttpAsync(context, "tree/json");
       mList.addAll(data ?? []);
       _state =
           mList.isEmpty ? PageStateView.showEmpty : PageStateView.showContent;

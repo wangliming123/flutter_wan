@@ -11,6 +11,7 @@ import 'package:flutter_wan/util/UiUtils.dart';
 class MinePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    bool isLogin = SpUtils.getInstance().getBoolAlways(SpConst.isLogin) ?? false;
     return Container(
       alignment: Alignment.center,
       child: Column(
@@ -37,7 +38,7 @@ class MinePage extends StatelessWidget {
             onTap: () {
               Navigator.pushNamed(context, RouteConst.collect);
             },
-          ).padding(top: 5.w, bottom: 5.w),
+          ).padding(top: 5.w, bottom: 5.w).visible(isLogin),
           UiUtils.lineTabButton(
             "我的分享",
             16.sp,
@@ -49,7 +50,7 @@ class MinePage extends StatelessWidget {
             onTap: () {
               Navigator.pushNamed(context, RouteConst.userShare);
             },
-          ).padding(top: 5.w, bottom: 5.w),
+          ).padding(top: 5.w, bottom: 5.w).visible(isLogin),
           UiUtils.lineTabButton(
             "待办清单",
             16.sp,
@@ -58,7 +59,10 @@ class MinePage extends StatelessWidget {
             leftIcon:
                 Icon(IconData(59117, fontFamily: "iconfont1"), size: 25.w),
             rightIcon: Icon(Icons.keyboard_arrow_right),
-          ).padding(top: 5.w, bottom: 5.w),
+            onTap: () {
+              Navigator.pushNamed(context, RouteConst.todoList);
+            },
+          ).padding(top: 5.w, bottom: 5.w).visible(isLogin),
           UiUtils.lineTabButton(
             "关于",
             16.sp,
@@ -80,7 +84,7 @@ class MinePage extends StatelessWidget {
                 Icon(IconData(59166, fontFamily: "iconfont1"), size: 25.w),
             rightIcon: Icon(Icons.keyboard_arrow_right),
             onTap: () => logout(context),
-          ).padding(top: 5.w, bottom: 5.w),
+          ).padding(top: 5.w, bottom: 5.w).visible(isLogin),
         ],
       ),
     );

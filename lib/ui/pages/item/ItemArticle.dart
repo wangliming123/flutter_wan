@@ -142,13 +142,13 @@ class ItemArticle extends StatelessWidget {
         article["collect"] = false;
         onRefresh();
         await ApiService.ins()
-            .postHttpAsync("lg/uncollect_originId/${article[idName]}/json");
+            .postHttpAsync(context, "lg/uncollect_originId/${article[idName]}/json");
         onUnCollect?.call();
       } else {
         article["collect"] = true;
         onRefresh();
         await ApiService.ins()
-            .postHttpAsync("lg/collect/${article[idName]}/json");
+            .postHttpAsync(context, "lg/collect/${article[idName]}/json");
       }
     } on ApiException catch (e) {
       e.msg?.toast();
@@ -191,7 +191,7 @@ class ItemArticle extends StatelessWidget {
   _deleteShare(BuildContext context) async {
     try {
       await ApiService.ins()
-          .postHttpAsync("lg/user_article/delete/${article["id"]}/json");
+          .postHttpAsync(context, "lg/user_article/delete/${article["id"]}/json");
       onDeleteShare?.call();
     } on ApiException catch (e) {
       e.msg?.toast();
@@ -203,7 +203,7 @@ class ItemArticle extends StatelessWidget {
     int id = article["chapterId"];
     var knowledge;
     try {
-      var data = await ApiService.ins().getHttpAsync("tree/json");
+      var data = await ApiService.ins().getHttpAsync(context, "tree/json");
       if (data is List) {
         for (var element in data) {
           if (element["id"] == superId) {

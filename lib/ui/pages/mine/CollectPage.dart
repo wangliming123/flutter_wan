@@ -82,7 +82,7 @@ class _CollectState extends BaseState<CollectPage> {
         _state = PageStateView.showLoading;
       });
       var data =
-          await ApiService.ins().getHttpAsync("lg/collect/list/$_page/json");
+          await ApiService.ins().getHttpAsync(context, "lg/collect/list/$_page/json");
       _pageCount = data["pageCount"] ?? -1;
       _page++;
       _pageSize = data["size"] ?? 10;
@@ -106,7 +106,7 @@ class _CollectState extends BaseState<CollectPage> {
 
   void _onRefresh() async {
     try {
-      var data = await ApiService.ins().getHttpAsync("lg/collect/list/0/json");
+      var data = await ApiService.ins().getHttpAsync(context, "lg/collect/list/0/json");
       if (data["datas"] is List) {
         data["datas"].forEach((element) {
           element["collect"] = true;
@@ -137,7 +137,7 @@ class _CollectState extends BaseState<CollectPage> {
         return;
       }
       var data =
-          await ApiService.ins().getHttpAsync("lg/collect/list/$_page/json");
+          await ApiService.ins().getHttpAsync(context, "lg/collect/list/$_page/json");
       if (data["datas"] is List) {
         data["datas"].forEach((element) {
           element["collect"] = true;

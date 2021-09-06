@@ -42,7 +42,7 @@ class _UserShareState extends BaseState<UserSharePage> {
         ),
         toolbarHeight: 50.w,
         title:
-            UiUtils.text("我的收藏", 18.sp, ColorRes.textColorPrimary, maxLines: 1),
+            UiUtils.text("我的分享", 18.sp, ColorRes.textColorPrimary, maxLines: 1),
         backgroundColor: Colors.white,
       ),
       body: Container(
@@ -80,7 +80,7 @@ class _UserShareState extends BaseState<UserSharePage> {
         _state = PageStateView.showLoading;
       });
       var data = await ApiService.ins()
-          .getHttpAsync("user/lg/private_articles/$_page/json");
+          .getHttpAsync(context, "user/lg/private_articles/$_page/json");
       data = data["shareArticles"];
       _pageCount = data["pageCount"] ?? -1;
       _page++;
@@ -101,7 +101,7 @@ class _UserShareState extends BaseState<UserSharePage> {
   void _onRefresh() async {
     try {
       var data = await ApiService.ins()
-          .getHttpAsync("user/lg/private_articles/1/json");
+          .getHttpAsync(context, "user/lg/private_articles/1/json");
       data = data["shareArticles"];
       _page = 2;
       _pageCount = data["pageCount"] ?? -1;
@@ -127,7 +127,7 @@ class _UserShareState extends BaseState<UserSharePage> {
         return;
       }
       var data = await ApiService.ins()
-          .getHttpAsync("user/lg/private_articles/$_page/json");
+          .getHttpAsync(context, "user/lg/private_articles/$_page/json");
       data = data["shareArticles"];
       _page++;
       _pageCount = data["pageCount"] ?? -1;
