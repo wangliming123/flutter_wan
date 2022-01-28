@@ -43,6 +43,16 @@ Future<void> main() async {
 final GlobalKey<NavigatorState> navigatorKey = new GlobalKey<NavigatorState>();
 
 class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: AppPage(),
+    );
+  }
+
+}
+
+class AppPage extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -88,3 +98,4 @@ class MyApp extends StatelessWidget {
     return MaterialPageRoute(builder: (ctx) => builder(ctx));
   }
 }
+
