@@ -140,6 +140,8 @@ class _LoginState extends BaseState<LoginPage> {
             )
           ],
         ),
+      ).willPopScope(
+        willPop: _backPressed
       ),
     );
   }
@@ -150,6 +152,11 @@ class _LoginState extends BaseState<LoginPage> {
   void clickBlack() {
     _usernameFocus.unfocus();
     _passwordFocus.unfocus();
+  }
+
+  Future<bool> _backPressed() async {
+    Navigator.pushNamedAndRemoveUntil(context, RouteConst.mainPage, (route) => false);
+    return false;
   }
 
   void saveUserName(String value) {

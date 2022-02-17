@@ -19,12 +19,13 @@ class SplashPage extends StatelessWidget {
         GlobalValues.userId = await SpUtils.getInstance().getInt(SpConst.userId);
         ApiService.ins().postHttpAsync(context, "user/login",
             querys: {"username": username, "password": password});
-        Navigator.pushNamedAndRemoveUntil(
-            context, RouteConst.mainPage, (route) => false);
+
       } else {
-        Navigator.pushNamedAndRemoveUntil(
-            context, RouteConst.loginPage, (route) => false);
+        // Navigator.pushNamedAndRemoveUntil(
+        //     context, RouteConst.loginPage, (route) => false);
       }
+      Navigator.pushNamedAndRemoveUntil(
+          context, RouteConst.mainPage, (route) => false);
     });
     return Container(
       alignment: Alignment.center,

@@ -26,11 +26,12 @@ Future<void> main() async {
     SystemChrome.setSystemUIOverlayStyle(
       SystemUiOverlayStyle(
         statusBarColor: Colors.transparent,
-        systemNavigationBarDividerColor: Colors.transparent,
+        systemNavigationBarColor: Colors.white,
+        systemNavigationBarDividerColor: null,
         systemNavigationBarIconBrightness: Brightness.light,
         statusBarIconBrightness: Brightness.dark,
         statusBarBrightness: Brightness.light,
-      ),
+      )
     );
   }
   // 强制竖屏

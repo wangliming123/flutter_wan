@@ -90,6 +90,13 @@ extension WidgetEx on Widget {
       height: height,
     );
   }
+
+  Widget willPopScope({WillPopCallback? willPop}) {
+    return WillPopScope(
+      child: this,
+      onWillPop: willPop,
+    );
+  }
 }
 
 extension StringEx on String {
