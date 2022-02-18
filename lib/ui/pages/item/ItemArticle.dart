@@ -1,13 +1,18 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_wan/common/Const.dart';
 import 'package:flutter_wan/common/values.dart';
+import 'package:flutter_wan/database/DatabaseEntity.dart';
+import 'package:flutter_wan/database/DatabaseService.dart';
 import 'package:flutter_wan/http/ApiException.dart';
 import 'package:flutter_wan/http/ApiService.dart';
 import 'package:flutter_wan/ui/pages/WebViewPage.dart';
 import 'package:flutter_wan/util/Extension.dart';
 import 'package:flutter_wan/util/SpUtils.dart';
 import 'package:flutter_wan/util/UiUtils.dart';
+import 'package:uuid/uuid.dart';
 
 class ItemArticle extends StatelessWidget {
   final dynamic article;
@@ -16,6 +21,7 @@ class ItemArticle extends StatelessWidget {
   final void Function()? onDeleteShare;
   final bool showDelete;
   final String idName;
+  String? createTime;
 
   ItemArticle(
     this.article,
@@ -24,7 +30,10 @@ class ItemArticle extends StatelessWidget {
     this.onDeleteShare,
     this.showDelete = false,
     this.idName = "id",
-  });
+    String? createTime,
+  }) {
+    this.createTime = createTime;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -71,7 +80,7 @@ class ItemArticle extends StatelessWidget {
                 ).visible(article["isTop"] ?? false),
                 Spacer(),
                 UiUtils.text(
-                        article["niceDate"], 12.sp, ColorRes.textColorSecondary)
+                        createTime ?? article["niceDate"], 12.sp, ColorRes.textColorSecondary)
                     .paddingAll(3.w),
               ],
             ),
@@ -138,8 +147,8 @@ class ItemArticle extends StatelessWidget {
     bool isLogin =
         await SpUtils.getInstance().getBool(SpConst.isLogin) ?? false;
     if (!isLogin) {
-      Navigator.pushNamedAndRemoveUntil(
-          context, RouteConst.loginPage, (route) => false);
+      Navigator.pushNamed(
+          context, RouteConst.loginPage);
       return;
     }
     try {
@@ -162,7 +171,9 @@ class ItemArticle extends StatelessWidget {
     }
   }
 
-  _goArticleInfo(BuildContext context) {
+  _goArticleInfo(BuildContext context) async {
+    var database = await DatabaseService.ins().getDatabase();
+    database.historyDao.insertHistory(new History(Uuid().v1(), json.encode(article), idName));
     Navigator.pushNamed(context, RouteConst.webView,
         arguments: WebUrl(article["link"], article["title"]));
   }

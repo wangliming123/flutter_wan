@@ -50,10 +50,17 @@ dependencies:
   scrollable_positioned_list: ^0.2.3
   # date转换组件
   date_format: ^2.0.5
+  # 数据库
+  floor: ^1.2.0
+  # uuid
+  uuid: ^3.0.5
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+
+  floor_generator: ^1.2.0
+  build_runner: ^2.1.2
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

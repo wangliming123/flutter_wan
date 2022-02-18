@@ -1,17 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_wan/base/BaseState.dart';
 import 'package:flutter_wan/common/Const.dart';
 import 'package:flutter_wan/common/GlobalValues.dart';
 import 'package:flutter_wan/common/values.dart';
+import 'package:flutter_wan/EventBus.dart';
 import 'package:flutter_wan/util/Extension.dart';
 import 'package:flutter_wan/util/SpUtils.dart';
 import 'package:flutter_wan/util/UiUtils.dart';
 
-class MinePage extends StatelessWidget {
+class MinePage extends StatefulWidget {
+
+
   @override
-  Widget build(BuildContext context) {
-    bool isLogin = SpUtils.getInstance().getBoolAlways(SpConst.isLogin) ?? false;
+  State<StatefulWidget> createState() {
+    return _MineState();
+  }
+}
+
+class _MineState extends BaseState<MinePage> {
+  bool isLogin = false;
+  @override
+  Widget getLayout() {
     return Container(
       alignment: Alignment.center,
       child: Column(
@@ -19,13 +30,16 @@ class MinePage extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           UiUtils.lineTabButton(
-            "浏览历史",
-            16.sp,
-            textColor: ColorRes.textColorPrimary,
-            height: 50.w,
-            leftIcon:
-                Icon(const IconData(58881, fontFamily: "iconfont1"), size: 25.w),
-            rightIcon: Icon(Icons.keyboard_arrow_right),
+              "浏览历史",
+              16.sp,
+              textColor: ColorRes.textColorPrimary,
+              height: 50.w,
+              leftIcon:
+              Icon(const IconData(58881, fontFamily: "iconfont1"), size: 25.w),
+              rightIcon: Icon(Icons.keyboard_arrow_right),
+              onTap: () {
+                Navigator.pushNamed(context, RouteConst.history);
+              }
           ).padding(top: 5.w, bottom: 5.w),
           UiUtils.lineTabButton(
             "我的收藏",
@@ -33,7 +47,7 @@ class MinePage extends StatelessWidget {
             textColor: ColorRes.textColorPrimary,
             height: 50.w,
             leftIcon:
-                Icon(const IconData(58882, fontFamily: "iconfont1"), size: 25.w),
+            Icon(const IconData(58882, fontFamily: "iconfont1"), size: 25.w),
             rightIcon: Icon(Icons.keyboard_arrow_right),
             onTap: () {
               Navigator.pushNamed(context, RouteConst.collect);
@@ -45,7 +59,7 @@ class MinePage extends StatelessWidget {
             textColor: ColorRes.textColorPrimary,
             height: 50.w,
             leftIcon:
-                Icon(const IconData(59089, fontFamily: "iconfont1"), size: 25.w),
+            Icon(const IconData(59089, fontFamily: "iconfont1"), size: 25.w),
             rightIcon: Icon(Icons.keyboard_arrow_right),
             onTap: () {
               Navigator.pushNamed(context, RouteConst.userShare);
@@ -57,7 +71,7 @@ class MinePage extends StatelessWidget {
             textColor: ColorRes.textColorPrimary,
             height: 50.w,
             leftIcon:
-                Icon(const IconData(59117, fontFamily: "iconfont1"), size: 25.w),
+            Icon(const IconData(59117, fontFamily: "iconfont1"), size: 25.w),
             rightIcon: Icon(Icons.keyboard_arrow_right),
             onTap: () {
               Navigator.pushNamed(context, RouteConst.todoList);
@@ -69,7 +83,7 @@ class MinePage extends StatelessWidget {
             textColor: ColorRes.textColorPrimary,
             height: 50.w,
             leftIcon:
-                Icon(const IconData(58984, fontFamily: "iconfont1"), size: 25.w),
+            Icon(const IconData(58984, fontFamily: "iconfont1"), size: 25.w),
             rightIcon: Icon(Icons.keyboard_arrow_right),
             onTap: () {
               showAbout(context);
@@ -81,7 +95,7 @@ class MinePage extends StatelessWidget {
             textColor: ColorRes.textColorPrimary,
             height: 50.w,
             leftIcon:
-                Icon(const IconData(59166, fontFamily: "iconfont1"), size: 25.w),
+            Icon(const IconData(59166, fontFamily: "iconfont1"), size: 25.w),
             rightIcon: Icon(Icons.keyboard_arrow_right),
             onTap: () => logout(context),
           ).padding(top: 5.w, bottom: 5.w).visible(isLogin),
@@ -90,15 +104,31 @@ class MinePage extends StatelessWidget {
     );
   }
 
-  void logout(BuildContext context) {
-    SpUtils.getInstance().removeData(SpConst.isLogin);
-    SpUtils.getInstance().removeData(SpConst.username);
-    SpUtils.getInstance().removeData(SpConst.userId);
-    SpUtils.getInstance().removeData(SpConst.password);
-    SpUtils.getInstance().removeData(SpConst.cookie);
+  @override
+  void initData() {
+    isLogin = SpUtils.getInstance().getBoolAlways(SpConst.isLogin) ?? false;
+    addEvent(LOGIN_SUCCESS, (arg) {
+      refreshLoginState();
+    });
+  }
+  void refreshLoginState() {
+    isLogin = SpUtils.getInstance().getBoolAlways(SpConst.isLogin) ?? false;
+    print("refreshLoginState");
+    print(isLogin);
+    invalidate();
+  }
+
+  void logout(BuildContext context) async {
+    await SpUtils.getInstance().removeData(SpConst.username);
+    await SpUtils.getInstance().removeData(SpConst.userId);
+    await SpUtils.getInstance().removeData(SpConst.password);
+    await SpUtils.getInstance().removeData(SpConst.cookie);
+    await SpUtils.getInstance().removeData(SpConst.isLogin);
     GlobalValues.userId = null;
-    Navigator.pushNamedAndRemoveUntil(
-        context, RouteConst.loginPage, (route) => false);
+    refreshLoginState();
+    bus.emit(LOGOUT_EVENT);
+    Navigator.pushNamed(
+        context, RouteConst.loginPage);
   }
 
   void showAbout(BuildContext context) {

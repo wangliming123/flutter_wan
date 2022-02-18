@@ -6,6 +6,7 @@ import 'package:flutter_wan/common/Const.dart';
 import 'package:flutter_wan/common/values.dart';
 import 'package:flutter_wan/http/ApiException.dart';
 import 'package:flutter_wan/http/ApiService.dart';
+import 'package:flutter_wan/EventBus.dart';
 import 'package:flutter_wan/ui/widget/PageStateView.dart';
 import 'package:flutter_wan/util/Extension.dart';
 import 'package:flutter_wan/util/UiUtils.dart';
@@ -95,6 +96,12 @@ class _HomeState extends BaseState<HomePage> {
         invalidate();
       }
     }
+    addEvent(LOGIN_SUCCESS, (arg) {
+      _onRefresh();
+    });
+    addEvent(LOGOUT_EVENT, (arg) {
+      _onRefresh();
+    });
   }
 
   void _onRefresh() async {

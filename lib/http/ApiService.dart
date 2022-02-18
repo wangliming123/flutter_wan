@@ -63,7 +63,7 @@ class ApiService {
       var data = res["data"];
       if (code == -1001) {
         "请先登录".toast();
-        Navigator.pushNamedAndRemoveUntil(context, RouteConst.loginPage, (route) => false);
+        Navigator.pushNamed(context, RouteConst.loginPage);
       } else if (code == -1)
         throw ApiException(code, msg);
       else

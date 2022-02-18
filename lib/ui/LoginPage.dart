@@ -6,6 +6,7 @@ import 'package:flutter_wan/common/Const.dart';
 import 'package:flutter_wan/common/GlobalValues.dart';
 import 'package:flutter_wan/http/ApiException.dart';
 import 'package:flutter_wan/http/ApiService.dart';
+import 'package:flutter_wan/EventBus.dart';
 import 'package:flutter_wan/ui/widget/Buttons.dart';
 import 'package:flutter_wan/util/Extension.dart';
 import 'package:flutter_wan/util/SpUtils.dart';
@@ -140,8 +141,6 @@ class _LoginState extends BaseState<LoginPage> {
             )
           ],
         ),
-      ).willPopScope(
-        willPop: _backPressed
       ),
     );
   }
@@ -152,11 +151,6 @@ class _LoginState extends BaseState<LoginPage> {
   void clickBlack() {
     _usernameFocus.unfocus();
     _passwordFocus.unfocus();
-  }
-
-  Future<bool> _backPressed() async {
-    Navigator.pushNamedAndRemoveUntil(context, RouteConst.mainPage, (route) => false);
-    return false;
   }
 
   void saveUserName(String value) {
@@ -173,13 +167,15 @@ class _LoginState extends BaseState<LoginPage> {
       var res = await ApiService.ins().postHttpAsync(context, "user/login",
           querys: {"username": _username, "password": _password});
       hideCoverLoading();
-      SpUtils.getInstance().putBool(SpConst.isLogin, true);
-      SpUtils.getInstance().putString(SpConst.username, _username);
-      SpUtils.getInstance().putString(SpConst.password, _password);
-      SpUtils.getInstance().putInt(SpConst.userId, res["id"]);
+      await SpUtils.getInstance().putBool(SpConst.isLogin, true);
+      await SpUtils.getInstance().putString(SpConst.username, _username);
+      await SpUtils.getInstance().putString(SpConst.password, _password);
+      await SpUtils.getInstance().putInt(SpConst.userId, res["id"]);
       GlobalValues.userId = res["id"];
-      Navigator.pushNamedAndRemoveUntil(
-          context, RouteConst.mainPage, (route) => false);
+
+      bus.emit(LOGIN_SUCCESS);
+      // Navigator.pushNamed(context, RouteConst.mainPage);
+      Navigator.of(context).pop();
     } on ApiException catch(e) {
       e.toString().toast();
       hideCoverLoading();
@@ -188,6 +184,7 @@ class _LoginState extends BaseState<LoginPage> {
   }
 
   void register() async {
+    showCoverLoading();
     try {
       var res = await ApiService.ins().postHttpAsync(context, "user/register", querys: {
         "username": _username,
@@ -200,8 +197,8 @@ class _LoginState extends BaseState<LoginPage> {
       SpUtils.getInstance().putString(SpConst.password, _password);
       SpUtils.getInstance().putInt(SpConst.userId, res["id"]);
       GlobalValues.userId = res["id"];
-      Navigator.pushNamedAndRemoveUntil(
-          context, RouteConst.mainPage, (route) => false);
+      bus.emit(LOGIN_SUCCESS);
+      Navigator.of(context).pop();
     } on ApiException catch(e) {
       e.toString().toast();
       hideCoverLoading();
