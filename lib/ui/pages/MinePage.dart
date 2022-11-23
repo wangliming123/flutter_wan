@@ -90,15 +90,21 @@ class _MineState extends BaseState<MinePage> {
             },
           ).padding(top: 5.w, bottom: 5.w),
           UiUtils.lineTabButton(
-            "退出登录",
+            isLogin ? "退出登录" : "登录",
             16.sp,
             textColor: ColorRes.textColorPrimary,
             height: 50.w,
             leftIcon:
             Icon(const IconData(59166, fontFamily: "iconfont1"), size: 25.w),
             rightIcon: Icon(Icons.keyboard_arrow_right),
-            onTap: () => logout(context),
-          ).padding(top: 5.w, bottom: 5.w).visible(isLogin),
+            onTap: () => {
+              if (isLogin) {
+                logout(context)
+              } else {
+                Navigator.pushNamed(context, RouteConst.loginPage)
+              }
+            },
+          ).padding(top: 5.w, bottom: 5.w),
         ],
       ),
     );
@@ -127,8 +133,7 @@ class _MineState extends BaseState<MinePage> {
     GlobalValues.userId = null;
     refreshLoginState();
     bus.emit(LOGOUT_EVENT);
-    Navigator.pushNamed(
-        context, RouteConst.loginPage);
+    Navigator.pushNamed(context, RouteConst.loginPage);
   }
 
   void showAbout(BuildContext context) {
