@@ -61,10 +61,10 @@ class AppPage extends StatelessWidget {
     return SmartRefreshBuilder.buildApp(child: getPlatformApp());
   }
 
-  StatelessWidget getPlatformApp() {
+  StatefulWidget getPlatformApp() {
     return ScreenUtilInit(
       designSize: Size(375, 668),
-      builder: () => MaterialApp(
+      builder: (context, child) => MaterialApp(
         navigatorKey: navigatorKey,
         initialRoute: RouteConst.splashPage,
         onGenerateRoute: (settings) {
